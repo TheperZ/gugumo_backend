@@ -72,7 +72,7 @@ public class CommentEventListener {
         //토큰 여러개 집어넣기->한 계정에서의 여러 디바이스 사용
         MulticastMessage commentMessage = getCommentMessage(post.getTitle(), tokens, post.getId());
         log.info("[{}] 알림 전송", Thread.currentThread().getStackTrace()[1].getMethodName());
-        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(commentMessage);
+        BatchResponse response = FirebaseMessaging.getInstance().sendEachForMulticast(commentMessage);
 
         //에러 발생시?
         //db에서 찾기
