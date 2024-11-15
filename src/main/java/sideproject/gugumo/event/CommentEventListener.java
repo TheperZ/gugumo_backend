@@ -34,6 +34,7 @@ public class CommentEventListener {
     @Async
     @TransactionalEventListener
     public void sendPostWriter(CommentFcmEvent event) throws FirebaseMessagingException {
+        log.info("[{}] 알림 전송 메서드 동작", Thread.currentThread().getStackTrace()[1].getMethodName());
         Cmnt cmnt = event.getCmnt();
         Optional<Post> targetPost = postRepository.findById(cmnt.getPost().getId());
         if (targetPost.isEmpty() || !event.isCmntPostAuthorEq(targetPost.get())) {
@@ -63,12 +64,14 @@ public class CommentEventListener {
 
         List<String> tokens = new ArrayList<>();
         for (FcmNotificationToken fcmNotificationToken : tempToken) {
+            log.info("[{}] 알림을 전송할 토큰 리스트에 토큰 추가: token = {}", Thread.currentThread().getStackTrace()[1].getMethodName(), fcmNotificationToken.getToken());
             tokens.add(fcmNotificationToken.getToken());
         }
 
 
         //토큰 여러개 집어넣기->한 계정에서의 여러 디바이스 사용
         MulticastMessage commentMessage = getCommentMessage(post.getTitle(), tokens, post.getId());
+        log.info("[{}] 알림 전송", Thread.currentThread().getStackTrace()[1].getMethodName());
         BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(commentMessage);
 
         //에러 발생시?
@@ -79,6 +82,7 @@ public class CommentEventListener {
             for (int i = 0; i < responses.size(); i++) {
                 if (!responses.get(i).isSuccessful()) {
                     // The order of responses corresponds to the order of the registration tokens.
+                    log.info("[{}] 전송에 실패한 토큰 집계: token = {}", Thread.currentThread().getStackTrace()[1].getMethodName(), tokens.get(i));
                     failedTokens.add(tokens.get(i));
                 }
             }
@@ -86,13 +90,12 @@ public class CommentEventListener {
 
         //db에서 삭제
         for (String failedToken : failedTokens) {
+            log.info("[{}] 전송에 실패한 토큰 삭제: token = {}", Thread.currentThread().getStackTrace()[1].getMethodName(), failedToken);
             fcmNotificationTokenRepository.deleteAllByToken(failedToken);
         }
 
 
-
-
-
+        log.info("[{}] 전송한 알림 저장: noti = {}", Thread.currentThread().getStackTrace()[1].getMethodName(), noti);
         customNotiRepository.save(noti);
 
     }
@@ -102,6 +105,7 @@ public class CommentEventListener {
         //새 댓글이 작성되었습니다.
         String message = ms.getMessage("push.comment.content",null,null);
 
+        log.info("[{}] 알림 메시지 빌드: tokens = {}", Thread.currentThread().getStackTrace()[1].getClassName(), tokens);
         Notification notification = Notification.builder()
                 .setTitle(postTitle)
                 .setBody(message)
