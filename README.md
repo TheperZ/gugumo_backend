@@ -28,7 +28,7 @@ https://gugumo.vercel.app/
 </div>
 <p><strong>Environment</strong></p>
 <div>
-    <img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=IntelliJ IDEA&logoColor=white">
+    <img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
     <img src="https://img.shields.io/badge/git-F05033.svg?style=for-the-badge&logo=git&logoColor=white" />&nbsp
     <img src="https://img.shields.io/badge/github-181717.svg?style=for-the-badge&logo=github&logoColor=white" />&nbsp
 </div>
@@ -40,10 +40,10 @@ https://gugumo.vercel.app/
 <p><strong>Framework</strong></p>
 <div>
     <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"> 
-    <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=spring boot&logoColor=white">
-    <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=for-the-badge&logo=spring boot&logoColor=white"> 
+    <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+    <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> 
     <img src="https://img.shields.io/badge/QueryDSL-4479A1?style=for-the-badge">
-    <img src="https://img.shields.io/badge/Spring Security-4479A1?style=for-the-badge&logo=spring security&logoColor=white">
+    <img src="https://img.shields.io/badge/Spring Security-4479A1?style=for-the-badge&logo=springsecurity&logoColor=white">
     
 </div>
 <p><strong>Test</strong></p>
@@ -57,13 +57,9 @@ https://gugumo.vercel.app/
 </div>
 <p><strong>CI/CD</strong></p>
 <div>
-      <img src="https://img.shields.io/badge/Amazon EC2-FF9900.svg?style=for-the-badge&logo=Amazon EC2&logoColor=white">
-      <img src="https://img.shields.io/badge/Amazon S3-569A31.svg?style=for-the-badge&logo=Amazon S3&logoColor=white">
-      <img src="https://img.shields.io/badge/GitHub Actions-2088FF.svg?style=for-the-badge&logo=github actions&logoColor=white">
-</div>
-<p><strong>Others</strong></p>
-<div>
-    <img src="https://camo.githubusercontent.com/16beca491cf6ee479cef25bdaac11b96b24bde2fe85e860efe1a62abad0af761/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f46697265626173652d3033394245353f7374796c653d666f722d7468652d6261646765266c6f676f3d4669726562617365266c6f676f436f6c6f723d7768697465">
+      <img src="https://img.shields.io/badge/Amazon EC2-FF9900.svg?style=for-the-badge&logo=amazonec2&logoColor=white">
+      <img src="https://img.shields.io/badge/Amazon S3-569A31.svg?style=for-the-badge&logo=amazons3&logoColor=white">
+      <img src="https://img.shields.io/badge/GitHub Actions-2088FF.svg?style=for-the-badge&logo=githubactions&logoColor=white">
 </div>
 <br />
 
