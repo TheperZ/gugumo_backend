@@ -59,20 +59,6 @@ public class Meeting {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @NotNull
-    @JoinColumn(name = "post_id")
-    @OneToOne(fetch = FetchType.LAZY)
-    private Post post;
-
-
-    /**
-     * 연관관계 편의 메서드
-     * @param post
-     */
-    public void setPost(Post post) {
-        this.post = post;
-        post.setMeeting(this);
-    }
 
     public void update(UpdatePostReq updatePostReq) {
         this.meetingType = MeetingType.valueOf(updatePostReq.getMeetingType());

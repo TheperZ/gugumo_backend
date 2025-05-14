@@ -6,7 +6,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import sideproject.gugumo.domain.entity.meeting.GameType;
+import sideproject.gugumo.domain.entity.meeting.Location;
+import sideproject.gugumo.domain.entity.meeting.Meeting;
 import sideproject.gugumo.domain.entity.meeting.MeetingType;
+import sideproject.gugumo.domain.entity.member.Member;
+import sideproject.gugumo.exception.exception.ApiException;
 import sideproject.gugumo.validate.Conditional;
 import sideproject.gugumo.validate.EnumValue;
 
@@ -58,5 +62,39 @@ public class CreatePostReq {
     private String title;
     @NotEmpty
     private String content;
+
+
+    public Meeting toEntity(Member author){
+        if (MeetingType.valueOf(this.meetingType) == MeetingType.SHORT) {
+            return Meeting.builder()
+                    .meetingType(MeetingType.valueOf(this.meetingType))
+                    .gameType(GameType.valueOf(this.gameType))
+                    .location(Location.valueOf(this.location))
+                    .meetingDateTime(this.meetingDate.atStartOfDay().plusHours(this.meetingTime))
+                    .meetingDeadline(this.meetingDeadline)
+                    .meetingMemberNum(this.meetingMemberNum)
+                    .openKakao(this.openKakao)
+                    .member(author)
+                    .build();
+
+
+        } else if (MeetingType.valueOf(this.meetingType) == MeetingType.LONG) {
+            return Meeting.builder()
+                    .meetingType(MeetingType.valueOf(this.meetingType))
+                    .gameType(GameType.valueOf(this.gameType))
+                    .location(Location.valueOf(this.location))
+                    .meetingDateTime(LocalDate.of(1970, 1, 1).atStartOfDay().plusHours(this.meetingTime))       //장기모임의 경우 date를 무시
+                    .meetingDays(this.meetingDays)
+                    .meetingDeadline(this.meetingDeadline)
+                    .meetingMemberNum(this.meetingMemberNum)
+                    .openKakao(this.openKakao)
+                    .member(author)
+                    .build();
+
+
+        }else{
+            throw new ApiException("error: meeting type이 유효하지 않음");
+        }
+    }
 
 }

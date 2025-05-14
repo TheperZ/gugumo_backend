@@ -57,6 +57,7 @@ public class PostService {
     /**
      * 단기모집 기준: meetingDate, meetingTime 반영(default)
      * 장기모집일 경우 meetingDays(요일), meetingTime(1970/1/1을 쓰레기값으로)을 반영해야함
+     *
      * @param createPostReq
      */
     @Transactional
@@ -70,50 +71,23 @@ public class PostService {
         Member author = checkMemberValid(principal, "저장 실패: 게시글 저장 권한이 없습니다.", "저장 실패: 게시글 저장 권한이 없습니다.");
 
 
+        Meeting meeting = createPostReq.toEntity(author);
+
+        meetingRepository.save(meeting);
+
+
         //post 저장
         Post post = Post.builder()
                 .title(createPostReq.getTitle())
                 .content(createPostReq.getContent())
                 .member(author)
+                .meeting(meeting)
                 .build();
 
         postRepository.save(post);
 
-        Meeting meeting;
-
-        if (MeetingType.valueOf(createPostReq.getMeetingType()) == MeetingType.SHORT) {
-            meeting = Meeting.builder()
-                    .meetingType(MeetingType.valueOf(createPostReq.getMeetingType()))
-                    .gameType(GameType.valueOf(createPostReq.getGameType()))
-                    .location(Location.valueOf(createPostReq.getLocation()))
-                    .meetingDateTime(mergeDatetime(createPostReq.getMeetingDate(), createPostReq.getMeetingTime()))
-                    .meetingDeadline(createPostReq.getMeetingDeadline())
-                    .meetingMemberNum(createPostReq.getMeetingMemberNum())
-                    .openKakao(createPostReq.getOpenKakao())
-                    .member(author)
-                    .build();
-
-            meeting.setPost(post);
-            meetingRepository.save(meeting);
-        } else if (MeetingType.valueOf(createPostReq.getMeetingType()) == MeetingType.LONG) {
-            meeting = Meeting.builder()
-                    .meetingType(MeetingType.valueOf(createPostReq.getMeetingType()))
-                    .gameType(GameType.valueOf(createPostReq.getGameType()))
-                    .location(Location.valueOf(createPostReq.getLocation()))
-                    .meetingDateTime(LocalDate.of(1970, 1, 1).atStartOfDay().plusHours(createPostReq.getMeetingTime()))       //장기모임의 경우 date를 무시
-                    .meetingDays(createPostReq.getMeetingDays())
-                    .meetingDeadline(createPostReq.getMeetingDeadline())
-                    .meetingMemberNum(createPostReq.getMeetingMemberNum())
-                    .openKakao(createPostReq.getOpenKakao())
-                    .member(author)
-                    .build();
-
-            meeting.setPost(post);
-            meetingRepository.save(meeting);
-        }
-
-
     }
+
 
     /**
      *
@@ -434,6 +408,7 @@ public class PostService {
         return (T) result;
 
     }
-
-
 }
+
+
+
