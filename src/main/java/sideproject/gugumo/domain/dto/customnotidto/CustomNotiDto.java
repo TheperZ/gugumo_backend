@@ -25,6 +25,4 @@ public class CustomNotiDto {
     private boolean isRead;
 
 
-
-
 }

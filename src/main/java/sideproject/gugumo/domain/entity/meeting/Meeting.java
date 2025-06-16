@@ -7,7 +7,6 @@ import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.post.Post;
 import sideproject.gugumo.request.UpdatePostReq;
 
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -25,7 +24,6 @@ public class Meeting {
     private Long id;
 
 
-
     @Enumerated(EnumType.STRING)
     @NotNull
     private MeetingType meetingType;
@@ -39,7 +37,7 @@ public class Meeting {
     @NotNull
     private LocalDateTime meetingDateTime;
 
-    
+
     private String meetingDays;
     @NotNull
     private LocalDate meetingDeadline;
@@ -93,7 +91,6 @@ public class Meeting {
     public void expireStatus() {
         this.status = MeetingStatus.END;
     }
-
 
 
 }

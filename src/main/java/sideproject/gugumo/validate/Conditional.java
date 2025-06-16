@@ -3,10 +3,12 @@ package sideproject.gugumo.validate;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -19,6 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Conditional {
 
     String message() default "필요한 값이 빠져있습니다.";
+
     Class<?>[] groups() default {};
 
     //조건부 대상이 되는 필드명
@@ -33,7 +36,7 @@ public @interface Conditional {
     Class<? extends Payload>[] payload() default {};
 
 
-    @Target({ TYPE })
+    @Target({TYPE})
     @Retention(RUNTIME)
     @Documented
     @interface List {

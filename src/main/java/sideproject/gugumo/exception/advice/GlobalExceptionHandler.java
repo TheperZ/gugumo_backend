@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
         log.error("[handlePostNotFoundException] ex : " + e.getMessage());
         return ApiResponse.createFail(e.getMessage());
     }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = {CommentNotFoundException.class})
     public ApiResponse<String> handleCommentNotFoundException(CommentNotFoundException e) {

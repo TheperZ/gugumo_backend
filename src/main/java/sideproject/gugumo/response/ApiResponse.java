@@ -32,6 +32,7 @@ public class ApiResponse<T> {
                 .message(null)
                 .build();
     }
+
     public static <T> ApiResponse<T> createSuccess() {
 
         //return new ApiResponse<>(SUCCESS_STATUS, null, null);
@@ -41,6 +42,7 @@ public class ApiResponse<T> {
                 .message(null)
                 .build();
     }
+
     public static <T> ApiResponse<T> createFail(T data, String failMessage) {
 //        return new ApiResponse<>(FAIL_STATUS, data, failMessage);
         return ApiResponse.<T>builder()
@@ -49,6 +51,7 @@ public class ApiResponse<T> {
                 .message(failMessage)
                 .build();
     }
+
     public static <T> ApiResponse<T> createFail(String failMessage) {
 //        return new ApiResponse<>(FAIL_STATUS, null, failMessage);
         return ApiResponse.<T>builder()

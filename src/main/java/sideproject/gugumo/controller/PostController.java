@@ -8,8 +8,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
 import sideproject.gugumo.domain.dto.detailpostdto.DetailPostDto;
+import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
 import sideproject.gugumo.domain.dto.simplepostdto.SimplePostDto;
 import sideproject.gugumo.page.PageCustom;
 import sideproject.gugumo.request.CreatePostReq;
@@ -48,30 +48,30 @@ public class PostController {
     @GetMapping("/api/v1/posts")
     public <T extends SimplePostDto> ApiResponse<PageCustom<T>> findPostSimple(
             @AuthenticationPrincipal CustomUserDetails principal,
-            @PageableDefault(size=12) Pageable pageable,
+            @PageableDefault(size = 12) Pageable pageable,
             @RequestParam(required = false, value = "q") String q,
-            @RequestParam(required = false, value="location") String location,
-            @RequestParam(required = false, value="gametype") String gameType,
-            @RequestParam(required = false, value="meetingstatus", defaultValue = "RECRUIT") String meetingStatus,
+            @RequestParam(required = false, value = "location") String location,
+            @RequestParam(required = false, value = "gametype") String gameType,
+            @RequestParam(required = false, value = "meetingstatus", defaultValue = "RECRUIT") String meetingStatus,
             @RequestParam(required = false, value = "sort", defaultValue = "NEW") String sortType) {
-
 
 
         return ApiResponse.createSuccess(postService.findSimplePost(principal, pageable, q, gameType, location, meetingStatus, sortType));
     }
+
     @GetMapping("/api/v1/posts/{post_id}")
     public <T extends DetailPostDto> ApiResponse<T> findPostDetail(
             @AuthenticationPrincipal CustomUserDetails principal,
             @PathVariable("post_id") Long postId) {
         DetailPostDto detailPostDto = postService.findDetailPostByPostId(principal, postId);
 
-        return ApiResponse.createSuccess((T)detailPostDto);
+        return ApiResponse.createSuccess((T) detailPostDto);
     }
 
     @PatchMapping("/api/v1/posts/{post_id}")
     public ApiResponse<String> updatePost(@AuthenticationPrincipal CustomUserDetails principal,
-                                             @PathVariable("post_id") Long postId,
-                                             @RequestBody @Valid UpdatePostReq updatePostReq) {
+                                          @PathVariable("post_id") Long postId,
+                                          @RequestBody @Valid UpdatePostReq updatePostReq) {
         postService.update(principal, postId, updatePostReq);
 
         return ApiResponse.createSuccess("글 갱신 완료");
@@ -92,7 +92,7 @@ public class PostController {
     @GetMapping("/api/v1/posts/my")
     public <T extends SimplePostDto> ApiResponse<PageCustom<T>> findMyPost(
             @AuthenticationPrincipal CustomUserDetails principal,
-            @PageableDefault(size=12, sort="createDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false, value = "q", defaultValue = "") String q) {
         return ApiResponse.createSuccess(postService.findMyPost(principal, pageable, q));
 
@@ -103,8 +103,6 @@ public class PostController {
             @AuthenticationPrincipal CustomUserDetails principal) {
         return ApiResponse.createSuccess(postService.findRecommendPost(principal));
     }
-
-
 
 
 }

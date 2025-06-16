@@ -3,8 +3,6 @@ package sideproject.gugumo.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sideproject.gugumo.domain.dto.CmntDto;
@@ -48,7 +46,7 @@ public class CmntService {
         //삭제된 댓글의 대댓글도 작성할 수 있어야 함->deleteFalse를 확인하지 않음
         Cmnt parentCmnt = req.getParentCommentId() != null ?
                 cmntRepository.findById(req.getParentCommentId())
-                        .orElseThrow(()-> new CommentNotFoundException("대댓글의 상위 댓글이 존재하지 않습니다.")) : null;
+                        .orElseThrow(() -> new CommentNotFoundException("대댓글의 상위 댓글이 존재하지 않습니다.")) : null;
 
         Cmnt cmnt = Cmnt.builder()
                 .post(targetPost)
@@ -131,7 +129,8 @@ public class CmntService {
         Member author = memberRepository.findOne(principal.getId())
                 .orElseThrow(
                         () -> new NoAuthorizationException(notValidUserMessage)
-                );;
+                );
+        ;
 
         if (author.getStatus() != MemberStatus.active) {
             throw new NoAuthorizationException(notValidUserMessage);

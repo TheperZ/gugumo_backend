@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.meeting.Meeting;
+import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.request.UpdatePostReq;
 
 import java.time.LocalDateTime;

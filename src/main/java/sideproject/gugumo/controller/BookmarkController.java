@@ -38,7 +38,7 @@ public class BookmarkController {
     @GetMapping
     public <T extends SimplePostDto> ApiResponse<PageCustom<T>> findBookmark(
             @AuthenticationPrincipal CustomUserDetails principal,
-            @PageableDefault(size = 12, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false, value = "q", defaultValue = "") String q) {
 
         return ApiResponse.createSuccess(bookmarkService.findBookmarkByMember(principal, pageable, q));

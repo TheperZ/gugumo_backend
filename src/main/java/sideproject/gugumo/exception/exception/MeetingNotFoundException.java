@@ -1,6 +1,6 @@
 package sideproject.gugumo.exception.exception;
 
-public class MeetingNotFoundException extends RuntimeException{
+public class MeetingNotFoundException extends RuntimeException {
 
     public MeetingNotFoundException() {
     }

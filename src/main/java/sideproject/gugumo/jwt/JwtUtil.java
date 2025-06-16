@@ -42,7 +42,7 @@ public class JwtUtil {
     public String createJwt(LoginCreateJwtDto loginCreateJwtDto) {
 
         Date requestDate = Timestamp.valueOf(loginCreateJwtDto.getRequestTimeMs());
-        Date expireDate = Timestamp.valueOf(loginCreateJwtDto.getRequestTimeMs().plusSeconds(expiredMs/1000));
+        Date expireDate = Timestamp.valueOf(loginCreateJwtDto.getRequestTimeMs().plusSeconds(expiredMs / 1000));
 
         return Jwts.builder()
                 .claim("id", loginCreateJwtDto.getId())

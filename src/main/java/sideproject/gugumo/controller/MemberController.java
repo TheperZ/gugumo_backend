@@ -49,7 +49,7 @@ public class MemberController {
 
     @PatchMapping("/api/v1/members/nicknames")
     public ApiResponse<MemberInfoDto> updateMemberNickname(@AuthenticationPrincipal CustomUserDetails principal,
-                                                   @RequestBody UpdateMemberNicknameDto updateMemberNicknameDto) {
+                                                           @RequestBody UpdateMemberNicknameDto updateMemberNicknameDto) {
 
         String updateNickname = updateMemberNicknameDto.getNickname();
         long id = principal.getId();
@@ -73,7 +73,7 @@ public class MemberController {
 
     @PatchMapping("/api/v1/members/passwords")
     public ApiResponse<Boolean> updateMemberPassword(@AuthenticationPrincipal CustomUserDetails principal,
-                                                    @RequestBody UpdateMemberPasswordDto updateMemberPasswordDto) {
+                                                     @RequestBody UpdateMemberPasswordDto updateMemberPasswordDto) {
 
         long id = principal.getId();
 

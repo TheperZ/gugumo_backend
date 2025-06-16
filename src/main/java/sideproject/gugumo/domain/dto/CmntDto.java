@@ -23,7 +23,6 @@ public class CmntDto {
     private long orderNum;
 
 
-
     @QueryProjection
     public CmntDto(Long commentId, String author, boolean isYours, boolean isAuthorExpired, String content, LocalDateTime createdDateTime, boolean isNotRoot, Long parentCommentId, long orderNum) {
         this.commentId = commentId;

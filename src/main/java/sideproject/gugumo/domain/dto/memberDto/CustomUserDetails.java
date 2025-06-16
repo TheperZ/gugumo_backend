@@ -3,7 +3,6 @@ package sideproject.gugumo.domain.dto.memberDto;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import sideproject.gugumo.domain.entity.member.Member;
 
 import java.util.ArrayList;
 import java.util.Collection;

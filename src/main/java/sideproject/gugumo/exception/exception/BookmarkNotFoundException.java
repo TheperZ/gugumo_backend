@@ -1,6 +1,6 @@
 package sideproject.gugumo.exception.exception;
 
-public class BookmarkNotFoundException extends RuntimeException{
+public class BookmarkNotFoundException extends RuntimeException {
 
     public BookmarkNotFoundException() {
     }

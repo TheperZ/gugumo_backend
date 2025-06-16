@@ -1,9 +1,10 @@
 package sideproject.gugumo.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import sideproject.gugumo.domain.dto.memberDto.KakaoLoginRequestDto;
-import sideproject.gugumo.domain.dto.memberDto.KakaoUserInfoResponseDto;
 import sideproject.gugumo.domain.dto.memberDto.SignUpKakaoMemberDto;
 import sideproject.gugumo.response.ApiResponse;
 import sideproject.gugumo.service.KakaoService;
@@ -41,7 +42,6 @@ public class KakaoController {
 ////        return loginResult.toString();
 //        return ApiResponse.createSuccess(loginResult.toString());
 //    }
-
     @PostMapping("/api/v1/login/kakao")
     public ApiResponse<String> login(@RequestBody KakaoLoginRequestDto kakaoLoginRequestDto) {
 

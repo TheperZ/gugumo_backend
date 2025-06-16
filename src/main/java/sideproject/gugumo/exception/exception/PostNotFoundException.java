@@ -1,6 +1,6 @@
 package sideproject.gugumo.exception.exception;
 
-public class PostNotFoundException extends RuntimeException{
+public class PostNotFoundException extends RuntimeException {
 
     public PostNotFoundException() {
     }

@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sideproject.gugumo.domain.entity.member.MemberRole;
-import sideproject.gugumo.domain.entity.member.MemberStatus;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

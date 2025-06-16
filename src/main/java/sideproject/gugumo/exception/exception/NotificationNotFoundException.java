@@ -1,6 +1,6 @@
 package sideproject.gugumo.exception.exception;
 
-public class NotificationNotFoundException extends RuntimeException{
+public class NotificationNotFoundException extends RuntimeException {
     public NotificationNotFoundException() {
         super();
     }

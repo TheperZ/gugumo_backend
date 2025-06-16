@@ -3,10 +3,8 @@ package sideproject.gugumo.repository;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import org.springframework.data.domain.Pageable;
 import sideproject.gugumo.domain.dto.CmntDto;
 import sideproject.gugumo.domain.dto.QCmntDto;
-import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
 
@@ -29,8 +27,6 @@ public class CmntRepositoryImpl implements CmntRepositoryCustom {
 
     @Override
     public List<CmntDto> findComment(Long postId, Member user) {
-
-
 
 
         //isYours, isAuthorExpired 추가

@@ -12,8 +12,6 @@ import sideproject.gugumo.domain.entity.member.MemberStatus;
 import sideproject.gugumo.exception.exception.UserNotFoundException;
 import sideproject.gugumo.repository.MemberRepository;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -24,9 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
 
-        Member findMember = memberRepository.findOne(Long.parseLong(id)).orElseThrow(()->new UserNotFoundException("회원이 없습니다."));
+        Member findMember = memberRepository.findOne(Long.parseLong(id)).orElseThrow(() -> new UserNotFoundException("회원이 없습니다."));
 
-        if(findMember.getStatus() == MemberStatus.delete) {
+        if (findMember.getStatus() == MemberStatus.delete) {
             throw new UserNotFoundException("탈퇴한 회원입니다.");
         }
 

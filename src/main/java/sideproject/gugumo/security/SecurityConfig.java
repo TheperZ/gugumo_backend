@@ -32,13 +32,13 @@ public class SecurityConfig {
 
         // session disable
         http
-                .sessionManagement((session)->session
+                .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         ;
 
         // logout
         http
-                .logout((logout)->logout
+                .logout((logout) -> logout
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true))
         ;

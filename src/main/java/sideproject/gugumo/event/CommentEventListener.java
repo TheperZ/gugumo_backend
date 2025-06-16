@@ -8,10 +8,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import sideproject.gugumo.domain.entity.Cmnt;
+import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.notification.CustomNoti;
 import sideproject.gugumo.domain.entity.notification.FcmNotificationToken;
 import sideproject.gugumo.domain.entity.notification.NotificationType;
-import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.post.Post;
 import sideproject.gugumo.repository.CustomNotiRepository;
 import sideproject.gugumo.repository.FcmNotificationTokenRepository;
@@ -52,7 +52,6 @@ public class CommentEventListener {
                 .member(postWriter)
                 .postId(post.getId())
                 .build();
-
 
 
         //List로 받아서 모든 토큰에 대해 보내도록 변경
@@ -101,9 +100,9 @@ public class CommentEventListener {
     }
 
 
-    private MulticastMessage getCommentMessage(String postTitle, List<String> tokens, Long postId){
+    private MulticastMessage getCommentMessage(String postTitle, List<String> tokens, Long postId) {
         //새 댓글이 작성되었습니다.
-        String message = ms.getMessage("push.comment.content",null,null);
+        String message = ms.getMessage("push.comment.content", null, null);
 
         log.info("[{}] 알림 메시지 빌드: tokens = {}", Thread.currentThread().getStackTrace()[1].getClassName(), tokens);
         Notification notification = Notification.builder()

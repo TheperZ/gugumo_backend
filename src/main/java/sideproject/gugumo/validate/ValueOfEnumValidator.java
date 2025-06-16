@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 public class ValueOfEnumValidator implements ConstraintValidator<EnumValue, String> {
 
     private EnumValue enumValue;
+
     @Override
     public void initialize(EnumValue constraintAnnotation) {
         this.enumValue = constraintAnnotation;

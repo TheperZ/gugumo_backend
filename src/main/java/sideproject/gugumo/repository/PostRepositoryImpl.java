@@ -3,7 +3,6 @@ package sideproject.gugumo.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
@@ -19,13 +18,11 @@ import sideproject.gugumo.cond.PostSearchCondition;
 import sideproject.gugumo.cond.SortType;
 import sideproject.gugumo.domain.dto.simplepostdto.QSimplePostQueryDto;
 import sideproject.gugumo.domain.dto.simplepostdto.SimplePostQueryDto;
-import sideproject.gugumo.domain.entity.member.FavoriteSport;
-import sideproject.gugumo.domain.entity.member.Member;
-import sideproject.gugumo.domain.entity.member.MemberStatus;
 import sideproject.gugumo.domain.entity.meeting.GameType;
 import sideproject.gugumo.domain.entity.meeting.Location;
 import sideproject.gugumo.domain.entity.meeting.MeetingStatus;
-import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
+import sideproject.gugumo.domain.entity.member.FavoriteSport;
+import sideproject.gugumo.domain.entity.member.Member;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +36,7 @@ import static sideproject.gugumo.domain.entity.post.QPost.post;
  * querydsl을 이용한 동적 검색
  */
 @Slf4j
-public class PostRepositoryImpl implements PostRepositoryCustom{
+public class PostRepositoryImpl implements PostRepositoryCustom {
 
 
     private final JPAQueryFactory queryFactory;
@@ -53,7 +50,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
     @Override
     public Page<SimplePostQueryDto> search(PostSearchCondition cond, Pageable pageable
             , Member member) {
-
 
 
         OrderSpecifier orderSpecifier = createOrderSpecifier(cond.getSortType());
@@ -138,7 +134,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
     @Override
     public List<SimplePostQueryDto> findRecommendPost(Member member) {
 
-        List<FavoriteSport> favoriteSports = member!=null?member.getFavoriteSports(): Collections.emptyList();
+        List<FavoriteSport> favoriteSports = member != null ? member.getFavoriteSports() : Collections.emptyList();
 
         List<SimplePostQueryDto> result = queryFactory.select(new QSimplePostQueryDto(
                         post.id.as("postId"),
@@ -185,8 +181,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
 
     private OrderSpecifier createOrderSpecifier(SortType sortType) {
         return switch (sortType) {
-            case OLD->new OrderSpecifier<>(Order.ASC, post.createDate);
-            case LIKE-> new OrderSpecifier<>(Order.DESC, post.viewCount);
+            case OLD -> new OrderSpecifier<>(Order.ASC, post.createDate);
+            case LIKE -> new OrderSpecifier<>(Order.DESC, post.viewCount);
             default -> new OrderSpecifier<>(Order.DESC, post.createDate);
         };
     }
@@ -213,6 +209,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
      * like("string"): 'string'으로 나감->%나 _ 등을 쓰려면 붙여줘야 함
      */
     private BooleanExpression queryEq(String q) {
-        return q != null ? post.title.contains(q).or(post.content.contains(q)): null;
+        return q != null ? post.title.contains(q).or(post.content.contains(q)) : null;
     }
 }
