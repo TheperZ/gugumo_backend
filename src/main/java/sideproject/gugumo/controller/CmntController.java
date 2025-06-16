@@ -15,13 +15,12 @@ import sideproject.gugumo.service.CmntService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/comment")
 @RequiredArgsConstructor
 public class CmntController {
 
     private final CmntService cmntService;
 
-    @PostMapping("/new")
+    @PostMapping("/api/v1/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<String> saveComment(@AuthenticationPrincipal CustomUserDetails principal,
                                            @Valid @RequestBody CreateCmntReq req) {
@@ -31,14 +30,14 @@ public class CmntController {
 
     }
 
-    @GetMapping("/{post_id}")
+    @GetMapping("/api/v1/posts/{post_id}/comments")
     public ApiResponse<List<CmntDto>> findComment(@AuthenticationPrincipal CustomUserDetails principal,
                                                   @PathVariable("post_id") Long postId) {
 
         return ApiResponse.createSuccess(cmntService.findComment(postId, principal));
     }
 
-    @PatchMapping("/{comment_id}")
+    @PatchMapping("/api/v1/comments/{comment_id}")
     public ApiResponse<String> updateComment(@AuthenticationPrincipal CustomUserDetails principal,
                                              @PathVariable("comment_id") Long commentId,
                                              @RequestBody UpdateCmntReq req) {
@@ -49,7 +48,7 @@ public class CmntController {
 
     }
 
-    @DeleteMapping("/{comment_id}")
+    @DeleteMapping("/api/v1/comments/{comment_id}")
     public ApiResponse<String> deleteComment(@AuthenticationPrincipal CustomUserDetails principal,
                                              @PathVariable("comment_id") Long commentId) {
         cmntService.deleteComment(commentId, principal);
