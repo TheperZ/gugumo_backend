@@ -1,4 +1,4 @@
-package sideproject.gugumo.api.controller;
+package sideproject.gugumo.controller;
 
 
 import jakarta.validation.Valid;
