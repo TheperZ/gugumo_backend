@@ -16,7 +16,12 @@ public class MailController {
 
     private final MailSenderService mailService;
 
-    @PostMapping("/api/v1/mailSend")
+    /**
+     * '이메일 인증요청' 자원을 생성하는 행위로 해석
+     * @param emailDto
+     * @return
+     */
+    @PostMapping("/api/v1/email-verifications")
     public ApiResponse<String> mailSend(@RequestBody @Valid EmailRequestDto emailDto) {
 
         mailService.joinEmail(emailDto.getEmail());
@@ -24,7 +29,12 @@ public class MailController {
         return ApiResponse.createSuccess("인증번호 전송 완료.");
     }
 
-    @PostMapping("/api/v1/mailAuthCheck")
+    /**
+     * 코드에 대해 검증 행위 수행
+     * @param emailCheckDto
+     * @return
+     */
+    @PostMapping("/api/v1/email-verifications/verify")
     public ApiResponse<String> AuthCheck(@RequestBody @Valid EmailCheckDto emailCheckDto) {
 
         mailService.checkAuthNum(emailCheckDto.getEmail(), emailCheckDto.getEmailAuthNum());
