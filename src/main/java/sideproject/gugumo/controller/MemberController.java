@@ -12,12 +12,12 @@ import sideproject.gugumo.service.MemberService;
 
 @RestController
 @RequiredArgsConstructor
-public class MemberApiController {
+public class MemberController {
 
     private final MemberService memberService;
     private final MailSenderService mailService;
 
-    @PostMapping("/api/v1/emailLogin")
+    @PostMapping("/api/v1/login/email")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<String> emailLogin(@RequestBody EmailLoginRequestDto emailLoginRequestDto) {
 
@@ -26,7 +26,7 @@ public class MemberApiController {
         return ApiResponse.createSuccess("Bearer " + token);
     }
 
-    @PostMapping("/api/v2/member")
+    @PostMapping("/api/v2/members")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<Boolean> joinMemberWithEmailAuth(@RequestBody @Valid SignUpEmailMemberDto signUpEmailMemberDto) {
 
@@ -37,7 +37,7 @@ public class MemberApiController {
         return ApiResponse.createSuccess(true);
     }
 
-    @GetMapping("/api/v1/member")
+    @GetMapping("/api/v1/members")
     public ApiResponse<MemberInfoDto> getMemberInfo(@AuthenticationPrincipal CustomUserDetails principal) {
 
         long id = principal.getId();
@@ -47,7 +47,7 @@ public class MemberApiController {
         return ApiResponse.createSuccess(memberInfoDto);
     }
 
-    @PatchMapping("/api/v1/member/updateNickname")
+    @PatchMapping("/api/v1/members/nicknames")
     public ApiResponse<MemberInfoDto> updateMemberNickname(@AuthenticationPrincipal CustomUserDetails principal,
                                                    @RequestBody UpdateMemberNicknameDto updateMemberNicknameDto) {
 
@@ -63,7 +63,7 @@ public class MemberApiController {
         return ApiResponse.createSuccess(memberInfo);
     }
 
-    @GetMapping("/api/v1/member/checkDuplicateNickname")
+    @GetMapping("/api/v1/members/nicknames/check")
     public ApiResponse<Boolean> checkDuplicateNickname(@RequestParam String nickname) {
 
         Boolean isExistNickname = memberService.isExistNickname(nickname);
@@ -71,7 +71,7 @@ public class MemberApiController {
         return ApiResponse.createSuccess(isExistNickname);
     }
 
-    @PatchMapping("/api/v1/member/updatePassword")
+    @PatchMapping("/api/v1/members/passwords")
     public ApiResponse<Boolean> updateMemberPassword(@AuthenticationPrincipal CustomUserDetails principal,
                                                     @RequestBody UpdateMemberPasswordDto updateMemberPasswordDto) {
 
@@ -92,7 +92,7 @@ public class MemberApiController {
         return ApiResponse.createSuccess(true);
     }
 
-    @PostMapping("/api/v1/resetPassword")
+    @PostMapping("/api/v1/reset-password")
     public ApiResponse<Boolean> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
 
         String username = resetPasswordDto.getEmail();

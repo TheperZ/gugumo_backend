@@ -42,7 +42,7 @@ public class KakaoController {
 //        return ApiResponse.createSuccess(loginResult.toString());
 //    }
 
-    @PostMapping("kakao/login")
+    @PostMapping("/api/v1/login/kakao")
     public ApiResponse<String> login(@RequestBody KakaoLoginRequestDto kakaoLoginRequestDto) {
 
         String token = memberService.kakaoLogin(kakaoLoginRequestDto.getUsername());
