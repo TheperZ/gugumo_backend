@@ -19,7 +19,7 @@ public class FcmNotificationTokenController {
 
     private final FcmNotificationTokenService fcmNotificationTokenService;
 
-    @PostMapping("/subscribe")
+    @PostMapping("/fcm-tokens")
     public ApiResponse<String> subscribe(@AuthenticationPrincipal CustomUserDetails principal,
                                          @Valid @RequestBody FcmTokenDto fcmTokenDto) {
 
