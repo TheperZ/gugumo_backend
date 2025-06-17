@@ -213,11 +213,6 @@ public class MemberService {
         return jwtUtil.createJwt(loginDto);
     }
 
-    public Boolean isJoinedKakaoMember(Long id) {
-
-        return memberRepository.findByKakaoId(id).isPresent();
-    }
-
     // TODO USERNAME 수정(JWT 토큰 발급할 때 clame에 username 속성 빼기)
     public String kakaoLogin(String username) {
 
