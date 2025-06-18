@@ -1,5 +1,7 @@
 package sideproject.gugumo.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,11 +21,12 @@ public class MemberController {
 
     @PostMapping("/api/v1/login/email")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<String> emailLogin(@RequestBody EmailLoginRequestDto emailLoginRequestDto) {
+    public ApiResponse<String> emailLogin(HttpServletResponse response, @RequestBody EmailLoginRequestDto emailLoginRequestDto) {
 
         String token = memberService.emailLogin(emailLoginRequestDto);
+        response.addHeader("Authorization", "Bearer " + token);
 
-        return ApiResponse.createSuccess("Bearer " + token);
+        return ApiResponse.createSuccess();
     }
 
     @PostMapping("/api/v2/members")

@@ -1,5 +1,6 @@
 package sideproject.gugumo.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,11 +44,12 @@ public class KakaoController {
 //        return ApiResponse.createSuccess(loginResult.toString());
 //    }
     @PostMapping("/api/v1/login/kakao")
-    public ApiResponse<String> login(@RequestBody KakaoLoginRequestDto kakaoLoginRequestDto) {
+    public ApiResponse<String> login(HttpServletResponse response, @RequestBody KakaoLoginRequestDto kakaoLoginRequestDto) {
 
         String token = memberService.kakaoLogin(kakaoLoginRequestDto.getUsername());
+        response.addHeader("Authorization", "Bearer " + token);
 
-        return ApiResponse.createSuccess("Bearer " + token);
+        return ApiResponse.createSuccess();
     }
 
     @PostMapping("/api/v1/kakao/member")
