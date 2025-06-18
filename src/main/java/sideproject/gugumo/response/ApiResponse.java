@@ -24,18 +24,32 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
+    public static <T> ApiResponse<T> createSuccess(StatusCode statusCode) {
+        return ApiResponse.<T>builder()
+                .status(SUCCESS_STATUS)
+                .data(null)
+                .message(statusCode.getCustomMessage())
+                .build();
+    }
+
     public static <T> ApiResponse<T> createSuccess(T data) {
-//        return new ApiResponse<>(SUCCESS_STATUS, data, null);
+        return ApiResponse.<T>builder()
+                .status(SUCCESS_STATUS)
+                .data(null)
+                .message(null)
+                .build();
+    }
+
+    public static <T> ApiResponse<T> createSuccess(StatusCode statusCode, T data) {
         return ApiResponse.<T>builder()
                 .status(SUCCESS_STATUS)
                 .data(data)
-                .message(null)
+                .message(statusCode.getCustomMessage())
                 .build();
     }
 
     public static <T> ApiResponse<T> createSuccess() {
 
-        //return new ApiResponse<>(SUCCESS_STATUS, null, null);
         return ApiResponse.<T>builder()
                 .status(SUCCESS_STATUS)
                 .data(null)
@@ -44,7 +58,6 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> createFail(T data, String failMessage) {
-//        return new ApiResponse<>(FAIL_STATUS, data, failMessage);
         return ApiResponse.<T>builder()
                 .status(FAIL_STATUS)
                 .data(data)
@@ -53,7 +66,6 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> createFail(String failMessage) {
-//        return new ApiResponse<>(FAIL_STATUS, null, failMessage);
         return ApiResponse.<T>builder()
                 .status(FAIL_STATUS)
                 .data(null)

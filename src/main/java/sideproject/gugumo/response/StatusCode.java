@@ -1,0 +1,44 @@
+package sideproject.gugumo.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+
+@AllArgsConstructor
+@Getter
+public enum StatusCode {
+
+    //회원 관련
+    LOGIN_SUCCESS(HttpStatus.OK, "로그인 완료"),
+    JOIN_MEMBER_WITH_EMAIL_AUTH(HttpStatus.CREATED, "이메일 회원가입 완료"),
+    GET_MEMBER_INFO(HttpStatus.OK, "회원 조회 완료"),
+    UPDATE_NICKNAME(HttpStatus.OK, "닉네임 수정 완료"),
+    CHECK_NICKNAME_DUPLICATE(HttpStatus.OK, "닉네임 중복 확인 완료"),
+    UPDATE_PASSWORD(HttpStatus.OK, "비밀번호 수정 완료"),
+    DELETE_MEMBER(HttpStatus.OK, "회원 탈퇴 완료"),
+    RESET_PASSWORD(HttpStatus.OK, "비밀번호 초기화 완료"),
+
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원이 존재하지 않음"),
+
+
+    //게시글 관련
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글이 존재하지 않음"),
+
+    //댓글 관련
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글이 존재하지 않음"),
+
+    //북마크 관련
+    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "북마크가 존재하지 않음"),
+
+
+    //알림 관련
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "알림이 존재하지 않음");
+
+
+    private final HttpStatusCode httpCode;
+    private final String customMessage;
+
+
+}
+

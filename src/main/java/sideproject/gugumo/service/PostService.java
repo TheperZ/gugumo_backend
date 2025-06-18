@@ -22,7 +22,7 @@ import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
 import sideproject.gugumo.domain.entity.post.Post;
 import sideproject.gugumo.exception.exception.NoAuthorizationException;
-import sideproject.gugumo.exception.exception.PostNotFoundException;
+import sideproject.gugumo.exception.exception.NotFoundException;
 import sideproject.gugumo.page.PageCustom;
 import sideproject.gugumo.repository.BookmarkRepository;
 import sideproject.gugumo.repository.MeetingRepository;
@@ -35,6 +35,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static sideproject.gugumo.response.StatusCode.POST_NOT_FOUND;
 
 
 /**
@@ -174,7 +176,7 @@ public class PostService {
 
 
         Post targetPost = postRepository.findByIdAndIsDeleteFalse(postId)
-                .orElseThrow(() -> new PostNotFoundException("조회 실패: 해당 게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
 
         Meeting targetMeeting = targetPost.getMeeting();
@@ -257,7 +259,7 @@ public class PostService {
         Member member = checkMemberValid(principal, "수정 실패: 비로그인 사용자입니다.", "수정 실패: 게시글 수정 권한이 없습니다.");
 
         Post targetPost = postRepository.findByIdAndIsDeleteFalse(postId)
-                .orElseThrow(() -> new PostNotFoundException("수정 실패: 해당 게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         //post의 member 동일인 여부 확인
         if (!targetPost.getMember().equals(member)) {
@@ -279,7 +281,7 @@ public class PostService {
         Member member = checkMemberValid(principal, "삭제 실패: 비로그인 사용자입니다.", "삭제 실패: 게시글 삭제 권한이 없습니다.");
 
         Post targetPost = postRepository.findByIdAndIsDeleteFalse(postId)
-                .orElseThrow(() -> new PostNotFoundException("삭제 실패: 해당 게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         //post의 member 동일인 여부 확인
         if (!targetPost.getMember().equals(member)) {

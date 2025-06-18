@@ -16,18 +16,18 @@ import sideproject.gugumo.domain.entity.meeting.MeetingType;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
 import sideproject.gugumo.domain.entity.post.Post;
-import sideproject.gugumo.exception.exception.BookmarkNotFoundException;
-import sideproject.gugumo.exception.exception.DuplicateBookmarkException;
-import sideproject.gugumo.exception.exception.NoAuthorizationException;
-import sideproject.gugumo.exception.exception.PostNotFoundException;
+import sideproject.gugumo.exception.exception.*;
 import sideproject.gugumo.page.PageCustom;
 import sideproject.gugumo.repository.BookmarkRepository;
 import sideproject.gugumo.repository.MemberRepository;
 import sideproject.gugumo.repository.PostRepository;
 import sideproject.gugumo.request.CreateBookmarkReq;
+import sideproject.gugumo.response.StatusCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static sideproject.gugumo.response.StatusCode.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -45,7 +45,7 @@ public class BookmarkService {
         Member member = checkMemberValid(principal, "북마크 등록 실패: 비로그인 사용자입니다.", "북마크 등록 실패: 권한이 없습니다.");
 
         Post post = postRepository.findByIdAndIsDeleteFalse(req.getPostId())
-                .orElseThrow(() -> new PostNotFoundException("북마크 등록 실패: 해당 게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         if (bookmarkRepository.existsByMemberAndPost(member, post)) {
             throw new DuplicateBookmarkException("북마크 등록 실패: 이미 등록된 북마크입니다.");
@@ -126,13 +126,13 @@ public class BookmarkService {
 
 
         Post targetPost = postRepository.findByIdAndIsDeleteFalse(postId)
-                .orElseThrow(() -> new PostNotFoundException("북마크 삭제 실패: 해당 게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         /**
          * deleteById()와 달리 예외 처리를 커스텀할 수 있음
          */
         Bookmark bookmark = bookmarkRepository.findByMemberAndPost(member, targetPost)
-                .orElseThrow(() -> new BookmarkNotFoundException("북마크 삭제 실패: 해당 북마크가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(BOOKMARK_NOT_FOUND));
 
         bookmarkRepository.delete(bookmark);
     }

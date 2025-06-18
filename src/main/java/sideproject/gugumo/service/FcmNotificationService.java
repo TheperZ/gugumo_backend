@@ -12,10 +12,11 @@ import sideproject.gugumo.domain.entity.member.MemberStatus;
 import sideproject.gugumo.domain.entity.notification.CustomNoti;
 import sideproject.gugumo.domain.entity.notification.NotificationType;
 import sideproject.gugumo.exception.exception.NoAuthorizationException;
-import sideproject.gugumo.exception.exception.NotificationNotFoundException;
+import sideproject.gugumo.exception.exception.NotFoundException;
 import sideproject.gugumo.repository.CustomNotiRepository;
 import sideproject.gugumo.repository.FcmNotificationTokenRepository;
 import sideproject.gugumo.repository.MemberRepository;
+import sideproject.gugumo.response.StatusCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class FcmNotificationService {
                 "알림 읽음처리 실패: 권한이 없습니다.");
 
         CustomNoti notification = customNotiRepository.findById(id).orElseThrow(
-                () -> new NotificationNotFoundException("알림 읽음처리 실패: 존재하지 않는 알림입니다.")
+                () -> new NotFoundException(StatusCode.NOTIFICATION_NOT_FOUND)
         );
 
         if (!notification.getMember().equals(member)) {
@@ -95,7 +96,7 @@ public class FcmNotificationService {
                 "알림 삭제 실패: 권한이 없습니다.");
 
         CustomNoti notification = customNotiRepository.findById(id).orElseThrow(
-                () -> new NotificationNotFoundException("알림 삭제 실패: 존재하지 않는 알림입니다.")
+                () -> new NotFoundException(StatusCode.NOTIFICATION_NOT_FOUND)
         );
 
         customNotiRepository.delete(notification);

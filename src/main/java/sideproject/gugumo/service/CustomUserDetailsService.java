@@ -9,8 +9,10 @@ import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
 import sideproject.gugumo.domain.dto.memberDto.CustomUserInfoDto;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
-import sideproject.gugumo.exception.exception.UserNotFoundException;
+import sideproject.gugumo.exception.exception.NotFoundException;
 import sideproject.gugumo.repository.MemberRepository;
+
+import static sideproject.gugumo.response.StatusCode.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +24,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
 
-        Member findMember = memberRepository.findOne(Long.parseLong(id)).orElseThrow(() -> new UserNotFoundException("회원이 없습니다."));
+        Member findMember = memberRepository.findOne(Long.parseLong(id)).orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         if (findMember.getStatus() == MemberStatus.delete) {
-            throw new UserNotFoundException("탈퇴한 회원입니다.");
+            throw new NotFoundException(MEMBER_NOT_FOUND);
         }
 
         CustomUserInfoDto customUserInfoDto = CustomUserInfoDto.builder()

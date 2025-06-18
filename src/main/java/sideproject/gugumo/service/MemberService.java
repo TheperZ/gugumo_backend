@@ -11,7 +11,7 @@ import sideproject.gugumo.domain.entity.member.FavoriteSport;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.exception.exception.DuplicateEmailException;
 import sideproject.gugumo.exception.exception.DuplicateNicknameException;
-import sideproject.gugumo.exception.exception.UserNotFoundException;
+import sideproject.gugumo.exception.exception.NotFoundException;
 import sideproject.gugumo.jwt.JwtUtil;
 import sideproject.gugumo.repository.FavoriteSportRepository;
 import sideproject.gugumo.repository.MemberRepository;
@@ -19,6 +19,8 @@ import sideproject.gugumo.repository.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static sideproject.gugumo.response.StatusCode.MEMBER_NOT_FOUND;
 
 @Service
 @Transactional(readOnly = true)
@@ -93,7 +95,7 @@ public class MemberService {
     public MemberInfoDto getMemberInfo(Long id) {
 
         Member findMember = memberRepository.findOne(id)
-                .orElseThrow(() -> new UserNotFoundException("회원이 없습니다."));
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         List<FavoriteSport> favoriteSportList = favoriteSportRepository.getFavoriteSports(findMember);
 
@@ -138,7 +140,7 @@ public class MemberService {
     public void updateNickname(Long id, String nickname) {
 
         Member findMember = memberRepository.findOne(id)
-                .orElseThrow(() -> new UserNotFoundException("회원이 없습니다."));
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         validateDuplicateMemberByNickname(nickname);
 
@@ -171,7 +173,7 @@ public class MemberService {
     @Transactional
     public String resetPassword(String username) {
         Member findMember = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("회원이 없습니다."));
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         String newPassword = RandomStringUtils.randomAlphanumeric(10);
 
@@ -197,7 +199,7 @@ public class MemberService {
     public String emailLogin(EmailLoginRequestDto emailLoginRequestDto) {
 
         Member findMember = memberRepository.findByUsername(emailLoginRequestDto.getUsername())
-                .orElseThrow(() -> new UserNotFoundException("회원이 없습니다."));
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         if (!passwordEncoder.matches(emailLoginRequestDto.getPassword(), findMember.getPassword())) {
             throw new BadCredentialsException("비밀번호가 틀렸습니다.");
@@ -217,7 +219,7 @@ public class MemberService {
     public String kakaoLogin(String username) {
 
         Member findMember = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("회원이 없습니다."));
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         LoginCreateJwtDto loginDto = LoginCreateJwtDto.builder()
                 .id(findMember.getId())
