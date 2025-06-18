@@ -35,7 +35,7 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> createSuccess(T data) {
         return ApiResponse.<T>builder()
                 .status(SUCCESS_STATUS)
-                .data(null)
+                .data(data)
                 .message(null)
                 .build();
     }

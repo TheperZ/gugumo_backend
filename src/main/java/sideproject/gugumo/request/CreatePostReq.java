@@ -10,7 +10,8 @@ import sideproject.gugumo.domain.entity.meeting.Location;
 import sideproject.gugumo.domain.entity.meeting.Meeting;
 import sideproject.gugumo.domain.entity.meeting.MeetingType;
 import sideproject.gugumo.domain.entity.member.Member;
-import sideproject.gugumo.exception.exception.ApiException;
+import sideproject.gugumo.exception.exception.CustomException;
+import sideproject.gugumo.response.StatusCode;
 import sideproject.gugumo.validate.Conditional;
 import sideproject.gugumo.validate.EnumValue;
 
@@ -93,7 +94,7 @@ public class CreatePostReq {
 
 
         }else{
-            throw new ApiException("error: meeting type이 유효하지 않음");
+            throw new CustomException(StatusCode.INVALID_MEETING);
         }
     }
 

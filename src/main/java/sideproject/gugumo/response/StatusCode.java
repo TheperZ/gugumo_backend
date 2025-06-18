@@ -26,6 +26,7 @@ public enum StatusCode {
 
     //게시글 관련
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글이 존재하지 않음"),
+    INVALID_MEETING(HttpStatus.BAD_REQUEST, "모임 타입이 적절하지 않음"),
 
     //댓글 관련
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글이 존재하지 않음"),
