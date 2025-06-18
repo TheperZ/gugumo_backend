@@ -2,6 +2,7 @@ package sideproject.gugumo.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,8 @@ import sideproject.gugumo.domain.dto.memberDto.SignUpKakaoMemberDto;
 import sideproject.gugumo.response.ApiResponse;
 import sideproject.gugumo.service.KakaoService;
 import sideproject.gugumo.service.MemberService;
+
+import static sideproject.gugumo.response.StatusCode.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,19 +47,19 @@ public class KakaoController {
 //        return ApiResponse.createSuccess(loginResult.toString());
 //    }
     @PostMapping("/api/v1/login/kakao")
-    public ApiResponse<String> login(HttpServletResponse response, @RequestBody KakaoLoginRequestDto kakaoLoginRequestDto) {
+    public ResponseEntity<ApiResponse<Void>> login(HttpServletResponse response, @RequestBody KakaoLoginRequestDto kakaoLoginRequestDto) {
 
         String token = memberService.kakaoLogin(kakaoLoginRequestDto.getUsername());
         response.addHeader("Authorization", "Bearer " + token);
 
-        return ApiResponse.createSuccess();
+        return ResponseEntity.status(KAKAO_LOGIN.getHttpCode()).body(ApiResponse.createSuccess(KAKAO_LOGIN));
     }
 
     @PostMapping("/api/v1/kakao/member")
-    public ApiResponse<Boolean> join(@RequestBody SignUpKakaoMemberDto signUpKakaoMemberDto) {
+    public ResponseEntity<ApiResponse<Void>> join(@RequestBody SignUpKakaoMemberDto signUpKakaoMemberDto) {
 
         memberService.kakaoJoinMember(signUpKakaoMemberDto);
 
-        return ApiResponse.createSuccess(true);
+        return ResponseEntity.status(JOIN_MEMBER_WITH_KAKAO.getHttpCode()).body(ApiResponse.createSuccess(JOIN_MEMBER_WITH_KAKAO));
     }
 }

@@ -1,6 +1,5 @@
 package sideproject.gugumo.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sideproject.gugumo.domain.dto.memberDto.*;
 import sideproject.gugumo.response.ApiResponse;
-import sideproject.gugumo.response.StatusCode;
 import sideproject.gugumo.service.MailSenderService;
 import sideproject.gugumo.service.MemberService;
 
@@ -29,7 +27,7 @@ public class MemberController {
         String token = memberService.emailLogin(emailLoginRequestDto);
         response.addHeader("Authorization", "Bearer " + token);
 
-        return ResponseEntity.status(LOGIN_SUCCESS.getHttpCode()).body(ApiResponse.createSuccess(LOGIN_SUCCESS));
+        return ResponseEntity.status(LOGIN.getHttpCode()).body(ApiResponse.createSuccess(LOGIN));
     }
 
     @PostMapping("/api/v2/members")

@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatusCode;
 public enum StatusCode {
 
     //회원 관련
-    LOGIN_SUCCESS(HttpStatus.OK, "로그인 완료"),
+    LOGIN(HttpStatus.OK, "로그인 완료"),
+    KAKAO_LOGIN(HttpStatus.OK, "카카오 로그인 완료"),
     JOIN_MEMBER_WITH_EMAIL_AUTH(HttpStatus.CREATED, "이메일 회원가입 완료"),
+    JOIN_MEMBER_WITH_KAKAO(HttpStatus.CREATED, "카카오 회원가입 완료"),
     GET_MEMBER_INFO(HttpStatus.OK, "회원 조회 완료"),
     UPDATE_NICKNAME(HttpStatus.OK, "닉네임 수정 완료"),
     CHECK_NICKNAME_DUPLICATE(HttpStatus.OK, "닉네임 중복 확인 완료"),
