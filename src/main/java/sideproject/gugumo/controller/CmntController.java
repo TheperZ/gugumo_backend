@@ -3,6 +3,7 @@ package sideproject.gugumo.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sideproject.gugumo.domain.dto.CmntDto;
@@ -14,6 +15,8 @@ import sideproject.gugumo.service.CmntService;
 
 import java.util.List;
 
+import static sideproject.gugumo.response.StatusCode.*;
+
 @RestController
 @RequiredArgsConstructor
 public class CmntController {
@@ -22,38 +25,38 @@ public class CmntController {
 
     @PostMapping("/api/v1/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<String> saveComment(@AuthenticationPrincipal CustomUserDetails principal,
-                                           @Valid @RequestBody CreateCmntReq req) {
+    public ResponseEntity<ApiResponse<String>> saveComment(@AuthenticationPrincipal CustomUserDetails principal,
+                                                           @Valid @RequestBody CreateCmntReq req) {
         cmntService.save(req, principal);
 
-        return ApiResponse.createSuccess("댓글 저장 완료");
+        return ResponseEntity.status(CREATE_COMMENT.getHttpCode()).body(ApiResponse.createSuccess(CREATE_COMMENT));
 
     }
 
     @GetMapping("/api/v1/posts/{post_id}/comments")
-    public ApiResponse<List<CmntDto>> findComment(@AuthenticationPrincipal CustomUserDetails principal,
-                                                  @PathVariable("post_id") Long postId) {
+    public ResponseEntity<ApiResponse<List<CmntDto>>> findComment(@AuthenticationPrincipal CustomUserDetails principal,
+                                                                  @PathVariable("post_id") Long postId) {
 
-        return ApiResponse.createSuccess(cmntService.findComment(postId, principal));
+        return ResponseEntity.status(FIND_COMMENT.getHttpCode()).body(ApiResponse.createSuccess(FIND_COMMENT, cmntService.findComment(postId, principal)));
     }
 
     @PatchMapping("/api/v1/comments/{comment_id}")
-    public ApiResponse<String> updateComment(@AuthenticationPrincipal CustomUserDetails principal,
-                                             @PathVariable("comment_id") Long commentId,
-                                             @RequestBody UpdateCmntReq req) {
+    public ResponseEntity<ApiResponse<String>> updateComment(@AuthenticationPrincipal CustomUserDetails principal,
+                                                             @PathVariable("comment_id") Long commentId,
+                                                             @RequestBody UpdateCmntReq req) {
 
         cmntService.updateComment(commentId, req, principal);
 
-        return ApiResponse.createSuccess("댓글 갱신 완료");
+        return ResponseEntity.status(UPDATE_COMMENT.getHttpCode()).body(ApiResponse.createSuccess(UPDATE_COMMENT));
 
     }
 
     @DeleteMapping("/api/v1/comments/{comment_id}")
-    public ApiResponse<String> deleteComment(@AuthenticationPrincipal CustomUserDetails principal,
-                                             @PathVariable("comment_id") Long commentId) {
+    public ResponseEntity<ApiResponse<String>> deleteComment(@AuthenticationPrincipal CustomUserDetails principal,
+                                                             @PathVariable("comment_id") Long commentId) {
         cmntService.deleteComment(commentId, principal);
 
-        return ApiResponse.createSuccess("댓글 삭제 완료");
+        return ResponseEntity.status(DELETE_COMMENT.getHttpCode()).body(ApiResponse.createSuccess(DELETE_COMMENT));
 
     }
 }
