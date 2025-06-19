@@ -32,28 +32,11 @@ public class ApiResponse<T> {
                 .build();
     }
 
-    public static <T> ApiResponse<T> createSuccess(T data) {
-        return ApiResponse.<T>builder()
-                .status(SUCCESS_STATUS)
-                .data(data)
-                .message(null)
-                .build();
-    }
-
     public static <T> ApiResponse<T> createSuccess(StatusCode statusCode, T data) {
         return ApiResponse.<T>builder()
                 .status(SUCCESS_STATUS)
                 .data(data)
                 .message(statusCode.getCustomMessage())
-                .build();
-    }
-
-    public static <T> ApiResponse<T> createSuccess() {
-
-        return ApiResponse.<T>builder()
-                .status(SUCCESS_STATUS)
-                .data(null)
-                .message(null)
                 .build();
     }
 

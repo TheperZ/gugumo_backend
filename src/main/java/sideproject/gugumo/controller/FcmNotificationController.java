@@ -2,14 +2,18 @@ package sideproject.gugumo.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sideproject.gugumo.domain.dto.customnotidto.CustomNotiDto;
 import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
 import sideproject.gugumo.response.ApiResponse;
+import sideproject.gugumo.response.StatusCode;
 import sideproject.gugumo.service.FcmNotificationService;
 
 import java.util.List;
+
+import static sideproject.gugumo.response.StatusCode.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,38 +25,39 @@ public class FcmNotificationController {
 
 
     @GetMapping("/notifications")
-    public <T extends CustomNotiDto> ApiResponse<List<T>> findNoti(@AuthenticationPrincipal CustomUserDetails principal) {
-        return ApiResponse.createSuccess(fcmNotificationService.findNotification(principal));
+    public <T extends CustomNotiDto> ResponseEntity<ApiResponse<List<T>>> findNoti(@AuthenticationPrincipal CustomUserDetails principal) {
+        return ResponseEntity.status(FIND_NOTIFICATION.getHttpCode()).body(ApiResponse.createSuccess(FIND_NOTIFICATION, fcmNotificationService.findNotification(principal)));
     }
 
     @PatchMapping("/notifications/{noti_id}")
-    public ApiResponse<String> read(@AuthenticationPrincipal CustomUserDetails principal,
+    public ResponseEntity<ApiResponse<String>> read(@AuthenticationPrincipal CustomUserDetails principal,
                                     @PathVariable("noti_id") Long id) {
 
         fcmNotificationService.read(principal, id);
-        return ApiResponse.createSuccess("알림 읽음처리 완료");
+        return ResponseEntity.status(READ_NOTIFICATION.getHttpCode()).body(ApiResponse.createSuccess(READ_NOTIFICATION));
     }
 
     @PatchMapping("/notifications")
-    public ApiResponse<String> readAll(@AuthenticationPrincipal CustomUserDetails principal) {
+    public ResponseEntity<ApiResponse<String>> readAll(@AuthenticationPrincipal CustomUserDetails principal) {
 
         fcmNotificationService.readAll(principal);
-        return ApiResponse.createSuccess("알림 모두 읽음처리 완료");
+        return ResponseEntity.status(READ_ALL_NOTIFICATION.getHttpCode()).body(ApiResponse.createSuccess(READ_ALL_NOTIFICATION));
     }
 
     @DeleteMapping("/notifications/{noti_id}")
-    public ApiResponse<String> deleteNoti(@AuthenticationPrincipal CustomUserDetails principal,
+    public ResponseEntity<ApiResponse<String>> deleteNoti(@AuthenticationPrincipal CustomUserDetails principal,
                                           @PathVariable("noti_id") Long id) {
         fcmNotificationService.deleteNotification(principal, id);
 
-        return ApiResponse.createSuccess("알림 삭제 완료");
+        return ResponseEntity.status(DELETE_NOTIFICATION.getHttpCode()).body(ApiResponse.createSuccess(DELETE_NOTIFICATION));
     }
 
 
     @DeleteMapping("/notifications/read")
-    public ApiResponse<String> deleteReadNoti(@AuthenticationPrincipal CustomUserDetails principal) {
+    public ResponseEntity<ApiResponse<String>> deleteReadNoti(@AuthenticationPrincipal CustomUserDetails principal) {
         fcmNotificationService.deleteReadNotification(principal);
 
-        return ApiResponse.createSuccess("읽은 알림 삭제 완료");
+        return ResponseEntity.status(DELETE_READ_NOTIFICATION.getHttpCode()).body(ApiResponse.createSuccess(DELETE_READ_NOTIFICATION));
     }
+
 }

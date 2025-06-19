@@ -52,6 +52,14 @@ public enum StatusCode {
 
 
     //알림 관련
+    CREATE_FCM_TOKEN(HttpStatus.CREATED, "FCM 토큰 저장 완료"),
+
+    FIND_NOTIFICATION(HttpStatus.OK, "알림 조회 완료"),
+    READ_NOTIFICATION(HttpStatus.OK, "알림 읽음 완료"),
+    READ_ALL_NOTIFICATION(HttpStatus.OK, "알림 모두 읽음 완료"),
+    DELETE_NOTIFICATION(HttpStatus.OK, "알림 삭제 완료"),
+    DELETE_READ_NOTIFICATION(HttpStatus.OK, "읽은 알림 삭제 완료"),
+
     NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "알림이 존재하지 않음"),
 
     //이메일 관련

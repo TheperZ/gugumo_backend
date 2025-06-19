@@ -63,7 +63,7 @@ public class PostController {
             @PathVariable("post_id") Long postId) {
         DetailPostDto detailPostDto = postService.findDetailPostByPostId(principal, postId);
 
-        return ResponseEntity.status(FIND_POST_DETAIL.getHttpCode()).body(ApiResponse.createSuccess((T) detailPostDto));
+        return ResponseEntity.status(FIND_POST_DETAIL.getHttpCode()).body(ApiResponse.createSuccess(FIND_POST_DETAIL, (T) detailPostDto));
     }
 
     @PatchMapping("/api/v1/posts/{post_id}")
@@ -92,7 +92,7 @@ public class PostController {
             @AuthenticationPrincipal CustomUserDetails principal,
             @PageableDefault(size = 12, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false, value = "q", defaultValue = "") String q) {
-        return ResponseEntity.status(FIND_MY_POST.getHttpCode()).body(ApiResponse.createSuccess(postService.findMyPost(principal, pageable, q)));
+        return ResponseEntity.status(FIND_MY_POST.getHttpCode()).body(ApiResponse.createSuccess(FIND_MY_POST, postService.findMyPost(principal, pageable, q)));
 
     }
 
