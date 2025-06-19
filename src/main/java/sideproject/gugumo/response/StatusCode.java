@@ -25,6 +25,13 @@ public enum StatusCode {
 
 
     //게시글 관련
+    CREATE_POST(HttpStatus.CREATED, "게시글 작성 완료"),
+    FIND_POST(HttpStatus.OK, "게시글 조회 완료"),
+    FIND_MY_POST(HttpStatus.OK, "내 게시글 조회 완료"),
+    FIND_RECOMMEND_POST(HttpStatus.OK, "추천 게시글 조회 완료"),
+    FIND_POST_DETAIL(HttpStatus.OK, "게시글 상세조회 완료"),
+    UPDATE_POST(HttpStatus.OK, "게시글 수정 완료"),
+    DELETE_POST(HttpStatus.OK, "게시글 삭제 완료"),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글이 존재하지 않음"),
     INVALID_MEETING(HttpStatus.BAD_REQUEST, "모임 타입이 적절하지 않음"),
 
