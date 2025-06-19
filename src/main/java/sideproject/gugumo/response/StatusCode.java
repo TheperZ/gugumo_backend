@@ -43,7 +43,11 @@ public enum StatusCode {
 
 
     //알림 관련
-    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "알림이 존재하지 않음");
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "알림이 존재하지 않음"),
+
+    //이메일 관련
+    EMAIL_SEND(HttpStatus.OK, "이메일 전송 완료"),
+    EMAIL_VERIFY(HttpStatus.OK, "이메일 전송 완료");
 
 
     private final HttpStatusCode httpCode;
