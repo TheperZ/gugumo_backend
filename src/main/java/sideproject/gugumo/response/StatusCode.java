@@ -39,6 +39,10 @@ public enum StatusCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글이 존재하지 않음"),
 
     //북마크 관련
+    CREATE_BOOKMARK(HttpStatus.CREATED, "북마크 등록 완료"),
+    FIND_BOOKMARK(HttpStatus.OK, "북마크한 게시글 조회 완료"),
+    DELETE_BOOKMARK(HttpStatus.OK, "북마크 삭제 완료"),
+
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "북마크가 존재하지 않음"),
 
 
