@@ -24,33 +24,31 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
-    public static <T> ApiResponse<T> createSuccess(T data) {
-//        return new ApiResponse<>(SUCCESS_STATUS, data, null);
-        return ApiResponse.<T>builder()
-                .status(SUCCESS_STATUS)
-                .data(data)
-                .message(null)
-                .build();
-    }
-    public static <T> ApiResponse<T> createSuccess() {
-
-        //return new ApiResponse<>(SUCCESS_STATUS, null, null);
+    public static <T> ApiResponse<T> createSuccess(StatusCode statusCode) {
         return ApiResponse.<T>builder()
                 .status(SUCCESS_STATUS)
                 .data(null)
-                .message(null)
+                .message(statusCode.getCustomMessage())
                 .build();
     }
+
+    public static <T> ApiResponse<T> createSuccess(StatusCode statusCode, T data) {
+        return ApiResponse.<T>builder()
+                .status(SUCCESS_STATUS)
+                .data(data)
+                .message(statusCode.getCustomMessage())
+                .build();
+    }
+
     public static <T> ApiResponse<T> createFail(T data, String failMessage) {
-//        return new ApiResponse<>(FAIL_STATUS, data, failMessage);
         return ApiResponse.<T>builder()
                 .status(FAIL_STATUS)
                 .data(data)
                 .message(failMessage)
                 .build();
     }
+
     public static <T> ApiResponse<T> createFail(String failMessage) {
-//        return new ApiResponse<>(FAIL_STATUS, null, failMessage);
         return ApiResponse.<T>builder()
                 .status(FAIL_STATUS)
                 .data(null)

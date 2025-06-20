@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @AllArgsConstructor
 @SuperBuilder
-public class PostCustomNotiDto extends CustomNotiDto{
+public class PostCustomNotiDto extends CustomNotiDto {
 
     private Long postId;
 

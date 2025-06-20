@@ -1,4 +1,4 @@
-package sideproject.gugumo.api.controller;
+package sideproject.gugumo.controller;
 
 
 import jakarta.validation.Valid;
@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
@@ -16,41 +17,42 @@ import sideproject.gugumo.request.CreateBookmarkReq;
 import sideproject.gugumo.response.ApiResponse;
 import sideproject.gugumo.service.BookmarkService;
 
+import static sideproject.gugumo.response.StatusCode.*;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/bookmark")
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
 
 
-    @PostMapping("/new")
+    @PostMapping("/api/v1/bookmarks")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<String> saveBookmark(
+    public ResponseEntity<ApiResponse<String>> saveBookmark(
             @AuthenticationPrincipal CustomUserDetails principal,
             @RequestBody @Valid CreateBookmarkReq createBookmarkReq) {
 
         bookmarkService.save(principal, createBookmarkReq);
 
-        return ApiResponse.createSuccess("북마크 생성 완료");
+        return ResponseEntity.status(CREATE_BOOKMARK.getHttpCode()).body(ApiResponse.createSuccess(CREATE_BOOKMARK));
     }
 
-    @GetMapping
-    public <T extends SimplePostDto> ApiResponse<PageCustom<T>> findBookmark(
+    @GetMapping("/api/v1/bookmarks")
+    public <T extends SimplePostDto> ResponseEntity<ApiResponse<PageCustom<T>>> findBookmark(
             @AuthenticationPrincipal CustomUserDetails principal,
-            @PageableDefault(size = 12, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false, value = "q", defaultValue = "") String q) {
 
-        return ApiResponse.createSuccess(bookmarkService.findBookmarkByMember(principal, pageable, q));
+        return ResponseEntity.status(FIND_BOOKMARK.getHttpCode()).body(ApiResponse.createSuccess(FIND_BOOKMARK, bookmarkService.findBookmarkByMember(principal, pageable, q)));
     }
 
-    @DeleteMapping("/{bookmark_id}")
-    public ApiResponse<String> deleteBookmark(
+    @DeleteMapping("/api/v1/bookmarks/{bookmark_id}")
+    public ResponseEntity<ApiResponse<String>> deleteBookmark(
             @AuthenticationPrincipal CustomUserDetails principal,
             @PathVariable("bookmark_id") Long bookmarkId) {
         bookmarkService.delete(bookmarkId, principal);
 
-        return ApiResponse.createSuccess("북마크 삭제 완료");
+        return ResponseEntity.status(DELETE_BOOKMARK.getHttpCode()).body(ApiResponse.createSuccess(DELETE_BOOKMARK));
     }
 
 }

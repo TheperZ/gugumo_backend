@@ -2,7 +2,6 @@ package sideproject.gugumo.page;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 
@@ -43,7 +42,6 @@ public class PageableCustom {
         this.number = slice.getNumber() + 1;
         this.size = slice.getSize();
     }
-
 
 
 }

@@ -7,13 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import sideproject.gugumo.domain.dto.memberDto.KakaoTokenResponseDto;
 import sideproject.gugumo.domain.dto.memberDto.KakaoUserInfoResponseDto;
-import sideproject.gugumo.domain.dto.memberDto.SignUpKakaoMemberDto;
-import sideproject.gugumo.domain.entity.member.Member;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +36,7 @@ public class KakaoService {
                         .build(true))
                 .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ClientResponse-> Mono.error(new RuntimeException("Invalid Parameter")))
+                .onStatus(HttpStatusCode::is4xxClientError, ClientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
                 .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
                 .bodyToMono(KakaoTokenResponseDto.class)
                 .block();

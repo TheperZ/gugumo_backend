@@ -16,7 +16,8 @@ https://gugumo.vercel.app/
 
 ## 프로젝트 소개
 
-배드민턴, 농구, 풋살, 테니스, 탁구, 야구 등 여러 가지 구기종목들을 좋아하거나 취미로 활동하시는데 같이 하실 분이 없거나 구하기 힘드신 분들을 위해서 만든 구기종목 모집 매칭 서비스입니다. 해당 매칭을 이용해서 근처 지역들에 사시는 분들끼리의 담소를 권유해 취미활동을 공유하도록 도와주고 있습니다.
+배드민턴, 농구, 풋살, 테니스, 탁구, 야구 등 여러 가지 구기종목들을 좋아하거나 취미로 활동하시는데 같이 하실 분이 없거나 구하기 힘드신 분들을 위해서 만든 구기종목 모집 매칭 서비스입니다. 해당 매칭을 이용해서
+근처 지역들에 사시는 분들끼리의 담소를 권유해 취미활동을 공유하도록 도와주고 있습니다.
 
 <br />
 
@@ -44,7 +45,7 @@ https://gugumo.vercel.app/
     <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> 
     <img src="https://img.shields.io/badge/QueryDSL-4479A1?style=for-the-badge">
     <img src="https://img.shields.io/badge/Spring Security-4479A1?style=for-the-badge&logo=springsecurity&logoColor=white">
-    
+
 </div>
 <p><strong>Test</strong></p>
 <div>
@@ -86,22 +87,22 @@ https://gugumo.vercel.app/
 <br />
 
 ## 아키텍처
+
 <img src="https://drive.google.com/uc?export=download&id=14J7BaWmlvBb0JUTBKTV-snkh5eTRlAcU">
 
 <br />
 
 ## 화면 구성
 
-|                                                    메인페이지                                                    |                                                   북마크페이지                                                   |                                                     작성한글                                                     |
-| :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: |
+|                                                      메인페이지                                                       |                                                      북마크페이지                                                      |                                                       작성한글                                                       |
+|:----------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:|
 | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/58eaf5be-547f-4215-b3c5-19013d8b0c2f) | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/b1651a82-619e-42d9-b812-109f63d97f96) | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/2d1a59d6-edec-49ee-b629-93a139cbb90b) |
-|                                                      로그인                                                      |                                                     회원가입                                                     |                                                    마이페이지                                                    |
+|                                                       로그인                                                        |                                                       회원가입                                                       |                                                      마이페이지                                                       |
 | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/b3b29943-bdd9-4e5e-b4c4-a3d091ffea24) | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/3a6b143c-fd57-4d4c-aca3-733132f49788) | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/65cf7af3-39c0-4686-bf4f-b1614ead2a52) |
-|                                               작성페이지 단기모집                                                |                                               작성페이지 장기모집                                                |                                                    상세페이지                                                    |
+|                                                    작성페이지 단기모집                                                    |                                                    작성페이지 장기모집                                                    |                                                      상세페이지                                                       |
 | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/d5c1c430-b7b2-46e5-a37f-0008b494338f) | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/fef819c3-f418-4af7-9dcd-94600f4c1559) | ![image](https://github.com/gugumo-service/gugumo_frontend/assets/96280450/0621da6f-0fe7-4ba3-9706-80cf423fb1d1) |
 
 <br />
-
 
 ## 웹개발팀
 

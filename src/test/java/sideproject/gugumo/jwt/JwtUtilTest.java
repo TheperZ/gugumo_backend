@@ -1,6 +1,5 @@
 package sideproject.gugumo.jwt;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class JwtUtilTest {
 
+    Long expiredMs = 86400000L;
     @Autowired
     private JwtUtil jwtUtil;
-
-    Long expiredMs = 86400000L;
 
     @Test
     @DisplayName("jwt token 생성")

@@ -1,6 +1,6 @@
 package sideproject.gugumo.exception.exception;
 
-public class DuplicateBookmarkException extends RuntimeException{
+public class DuplicateBookmarkException extends RuntimeException {
     public DuplicateBookmarkException() {
     }
 

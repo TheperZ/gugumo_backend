@@ -17,7 +17,8 @@ import java.util.Objects;
 public class Member {
 
     // 공통 속성
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "member_id")
     private Long id;
     private String nickname;
@@ -35,12 +36,12 @@ public class Member {
     private Boolean isAgreeMarketing;
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<FavoriteSport> favoriteSports = new ArrayList<>();
-    
+
     // email 속성
     private Boolean isEmailLogin;
     private String username;
     private String password;
-    
+
     // kakao 속성
     private Boolean isKakaoLogin;
     private Long kakaoId;

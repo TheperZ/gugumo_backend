@@ -1,6 +1,6 @@
 package sideproject.gugumo.exception.exception;
 
-public class NoAuthorizationException extends RuntimeException{
+public class NoAuthorizationException extends RuntimeException {
     public NoAuthorizationException() {
         super();
     }

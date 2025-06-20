@@ -1,7 +1,8 @@
-package sideproject.gugumo.api.controller;
+package sideproject.gugumo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
 import sideproject.gugumo.request.FcmTokenDto;
 import sideproject.gugumo.response.ApiResponse;
+import sideproject.gugumo.response.StatusCode;
 import sideproject.gugumo.service.FcmNotificationTokenService;
+
+import static sideproject.gugumo.response.StatusCode.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,12 +23,12 @@ public class FcmNotificationTokenController {
 
     private final FcmNotificationTokenService fcmNotificationTokenService;
 
-    @PostMapping("/subscribe")
-    public ApiResponse<String> subscribe(@AuthenticationPrincipal CustomUserDetails principal,
-                                         @Valid @RequestBody FcmTokenDto fcmTokenDto) {
+    @PostMapping("/fcm-tokens")
+    public ResponseEntity<ApiResponse<String>> subscribe(@AuthenticationPrincipal CustomUserDetails principal,
+                                                        @Valid @RequestBody FcmTokenDto fcmTokenDto) {
 
         fcmNotificationTokenService.subscribe(principal, fcmTokenDto);
 
-        return ApiResponse.createSuccess("토큰 저장 및 갱신 완료");
+        return ResponseEntity.status(CREATE_FCM_TOKEN.getHttpCode()).body(ApiResponse.createSuccess(CREATE_FCM_TOKEN));
     }
 }

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @SuperBuilder
 @AllArgsConstructor
-public class ShortDetailPostDto extends DetailPostDto{
+public class ShortDetailPostDto extends DetailPostDto {
 
     private LocalDateTime meetingDateTime;
 }

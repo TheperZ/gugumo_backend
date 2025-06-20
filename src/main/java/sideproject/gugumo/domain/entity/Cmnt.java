@@ -57,14 +57,6 @@ public class Cmnt {
     private boolean isDelete;
 
 
-    public void tempDelete() {
-        this.isDelete = true;
-    }
-
-    public void update(UpdateCmntReq req) {
-        this.content = req.getContent();
-    }
-
     @Builder
     public Cmnt(Post post, Cmnt parentCmnt, String content, Member member) {
         this.content = content;
@@ -81,5 +73,13 @@ public class Cmnt {
         }
         this.createDate = LocalDateTime.now();
         this.isDelete = false;
+    }
+
+    public void tempDelete() {
+        this.isDelete = true;
+    }
+
+    public void update(UpdateCmntReq req) {
+        this.content = req.getContent();
     }
 }

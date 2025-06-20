@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sideproject.gugumo.domain.entity.notification.FcmNotificationToken;
 import sideproject.gugumo.domain.entity.member.Member;
+import sideproject.gugumo.domain.entity.notification.FcmNotificationToken;
 
 import java.time.LocalDateTime;
 import java.util.List;

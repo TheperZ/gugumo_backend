@@ -56,7 +56,7 @@ class FavoriteSportRepositoryTest {
             favoriteSportsString.append(fs.getGameType().name());
             favoriteSportsString.append(',');
         }
-        favoriteSportsString.deleteCharAt(favoriteSportsString.length()-1);
+        favoriteSportsString.deleteCharAt(favoriteSportsString.length() - 1);
 
         //than
         Assertions.assertThat(favoriteSportsString.toString()).isEqualTo("BADMINTON,BASEBALL,FUTSAL");

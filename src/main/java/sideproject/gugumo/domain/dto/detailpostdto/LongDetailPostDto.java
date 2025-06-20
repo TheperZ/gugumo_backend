@@ -9,7 +9,7 @@ import java.time.LocalTime;
 @Getter
 @AllArgsConstructor
 @SuperBuilder
-public class LongDetailPostDto extends DetailPostDto{
+public class LongDetailPostDto extends DetailPostDto {
 
     private LocalTime meetingTime;
     private String meetingDays;

@@ -9,20 +9,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sideproject.gugumo.cond.PostSearchCondition;
 import sideproject.gugumo.cond.SortType;
-import sideproject.gugumo.domain.dto.simplepostdto.SimplePostQueryDto;
-import sideproject.gugumo.domain.entity.member.MemberStatus;
-import sideproject.gugumo.domain.entity.meeting.*;
-import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
 import sideproject.gugumo.domain.dto.detailpostdto.DetailPostDto;
-import sideproject.gugumo.domain.entity.member.Member;
-import sideproject.gugumo.domain.entity.post.Post;
 import sideproject.gugumo.domain.dto.detailpostdto.LongDetailPostDto;
 import sideproject.gugumo.domain.dto.detailpostdto.ShortDetailPostDto;
-import sideproject.gugumo.domain.dto.simplepostdto.SimplePostLongDto;
+import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
 import sideproject.gugumo.domain.dto.simplepostdto.SimplePostDto;
+import sideproject.gugumo.domain.dto.simplepostdto.SimplePostLongDto;
+import sideproject.gugumo.domain.dto.simplepostdto.SimplePostQueryDto;
 import sideproject.gugumo.domain.dto.simplepostdto.SimplePostShortDto;
+import sideproject.gugumo.domain.entity.meeting.*;
+import sideproject.gugumo.domain.entity.member.Member;
+import sideproject.gugumo.domain.entity.member.MemberStatus;
+import sideproject.gugumo.domain.entity.post.Post;
 import sideproject.gugumo.exception.exception.NoAuthorizationException;
-import sideproject.gugumo.exception.exception.PostNotFoundException;
+import sideproject.gugumo.exception.exception.NotFoundException;
 import sideproject.gugumo.page.PageCustom;
 import sideproject.gugumo.repository.BookmarkRepository;
 import sideproject.gugumo.repository.MeetingRepository;
@@ -33,9 +33,10 @@ import sideproject.gugumo.request.UpdatePostReq;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static sideproject.gugumo.response.StatusCode.POST_NOT_FOUND;
 
 
 /**
@@ -56,6 +57,7 @@ public class PostService {
     /**
      * 단기모집 기준: meetingDate, meetingTime 반영(default)
      * 장기모집일 경우 meetingDays(요일), meetingTime(1970/1/1을 쓰레기값으로)을 반영해야함
+     *
      * @param createPostReq
      */
     @Transactional
@@ -69,50 +71,25 @@ public class PostService {
         Member author = checkMemberValid(principal, "저장 실패: 게시글 저장 권한이 없습니다.", "저장 실패: 게시글 저장 권한이 없습니다.");
 
 
+        Meeting meeting = createPostReq.toEntity(author);
+
+        meetingRepository.save(meeting);
+
+
         //post 저장
         Post post = Post.builder()
                 .title(createPostReq.getTitle())
                 .content(createPostReq.getContent())
                 .member(author)
+                .meeting(meeting)
                 .build();
 
         postRepository.save(post);
 
-        Meeting meeting;
-
-        if(MeetingType.valueOf(createPostReq.getMeetingType())==MeetingType.SHORT){
-            meeting = Meeting.builder()
-                    .meetingType(MeetingType.valueOf(createPostReq.getMeetingType()))
-                    .gameType(GameType.valueOf(createPostReq.getGameType()))
-                    .location(Location.valueOf(createPostReq.getLocation()))
-                    .meetingDateTime(mergeDatetime(createPostReq.getMeetingDate(), createPostReq.getMeetingTime()))
-                    .meetingDeadline(createPostReq.getMeetingDeadline())
-                    .meetingMemberNum(createPostReq.getMeetingMemberNum())
-                    .openKakao(createPostReq.getOpenKakao())
-                    .member(author)
-                    .build();
-
-            meeting.setPost(post);
-            meetingRepository.save(meeting);
-        } else if (MeetingType.valueOf(createPostReq.getMeetingType()) == MeetingType.LONG) {
-            meeting = Meeting.builder()
-                    .meetingType(MeetingType.valueOf(createPostReq.getMeetingType()))
-                    .gameType(GameType.valueOf(createPostReq.getGameType()))
-                    .location(Location.valueOf(createPostReq.getLocation()))
-                    .meetingDateTime(LocalDate.of(1970,1,1).atStartOfDay().plusHours(createPostReq.getMeetingTime()))       //장기모임의 경우 date를 무시
-                    .meetingDays(createPostReq.getMeetingDays())
-                    .meetingDeadline(createPostReq.getMeetingDeadline())
-                    .meetingMemberNum(createPostReq.getMeetingMemberNum())
-                    .openKakao(createPostReq.getOpenKakao())
-                    .member(author)
-                    .build();
-
-            meeting.setPost(post);
-            meetingRepository.save(meeting);
-        }
-
-
     }
+
+
+
 
     /**
      *
@@ -169,14 +146,13 @@ public class PostService {
     }
 
 
-
     //장기, 단기에 따라 dto를 나눠서 전송
     @Transactional          //viewCount++가 동작하므로 readonly=false
     public <T extends DetailPostDto> T findDetailPostByPostId(CustomUserDetails principal, Long postId) {
 
 
         Post targetPost = postRepository.findByIdAndIsDeleteFalse(postId)
-                .orElseThrow(()->new PostNotFoundException("조회 실패: 해당 게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
 
         Meeting targetMeeting = targetPost.getMeeting();
@@ -258,8 +234,8 @@ public class PostService {
         //토큰에서
         Member member = checkMemberValid(principal, "수정 실패: 비로그인 사용자입니다.", "수정 실패: 게시글 수정 권한이 없습니다.");
 
-        Post targetPost =postRepository.findByIdAndIsDeleteFalse(postId)
-                .orElseThrow(()->new PostNotFoundException("수정 실패: 해당 게시글이 존재하지 않습니다."));
+        Post targetPost = postRepository.findByIdAndIsDeleteFalse(postId)
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         //post의 member 동일인 여부 확인
         if (!targetPost.getMember().equals(member)) {
@@ -273,6 +249,7 @@ public class PostService {
         targetMeeting.update(updatePostReq);
 
     }
+
     @Transactional
     public void deletePost(CustomUserDetails principal, Long postId) {
 
@@ -280,7 +257,7 @@ public class PostService {
         Member member = checkMemberValid(principal, "삭제 실패: 비로그인 사용자입니다.", "삭제 실패: 게시글 삭제 권한이 없습니다.");
 
         Post targetPost = postRepository.findByIdAndIsDeleteFalse(postId)
-                .orElseThrow(()->new PostNotFoundException("삭제 실패: 해당 게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         //post의 member 동일인 여부 확인
         if (!targetPost.getMember().equals(member)) {
@@ -374,7 +351,6 @@ public class PostService {
                     .build();
 
 
-
         } else if (s.getMeetingType() == MeetingType.LONG) {
             result = SimplePostLongDto.builder()
                     .postId(s.getPostId())
@@ -388,8 +364,6 @@ public class PostService {
                     .meetingTime(s.getMeetingDateTime().toLocalTime())
                     .meetingDays(s.getMeetingDays())
                     .build();
-
-
 
 
         }
@@ -417,7 +391,6 @@ public class PostService {
                     .build();
 
 
-
         } else if (post.getMeeting().getMeetingType() == MeetingType.LONG) {
             result = SimplePostLongDto.builder()
                     .postId(post.getId())
@@ -431,8 +404,6 @@ public class PostService {
                     .meetingTime(meeting.getMeetingDateTime().toLocalTime())
                     .meetingDays(meeting.getMeetingDays())
                     .build();
-
-
 
 
         }

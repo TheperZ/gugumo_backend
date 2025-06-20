@@ -6,6 +6,7 @@ import lombok.*;
 import sideproject.gugumo.domain.entity.member.Member;
 
 import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Builder
@@ -40,7 +41,6 @@ public class CustomNoti {
 
     //postNoti
     private Long postId;
-
 
 
     public void read() {

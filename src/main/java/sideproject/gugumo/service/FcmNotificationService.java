@@ -7,15 +7,16 @@ import org.springframework.transaction.annotation.Transactional;
 import sideproject.gugumo.domain.dto.customnotidto.CustomNotiDto;
 import sideproject.gugumo.domain.dto.customnotidto.PostCustomNotiDto;
 import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
-import sideproject.gugumo.domain.entity.notification.CustomNoti;
-import sideproject.gugumo.domain.entity.notification.NotificationType;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
+import sideproject.gugumo.domain.entity.notification.CustomNoti;
+import sideproject.gugumo.domain.entity.notification.NotificationType;
 import sideproject.gugumo.exception.exception.NoAuthorizationException;
-import sideproject.gugumo.exception.exception.NotificationNotFoundException;
+import sideproject.gugumo.exception.exception.NotFoundException;
 import sideproject.gugumo.repository.CustomNotiRepository;
-import sideproject.gugumo.repository.MemberRepository;
 import sideproject.gugumo.repository.FcmNotificationTokenRepository;
+import sideproject.gugumo.repository.MemberRepository;
+import sideproject.gugumo.response.StatusCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class FcmNotificationService {
                 "알림 읽음처리 실패: 권한이 없습니다.");
 
         CustomNoti notification = customNotiRepository.findById(id).orElseThrow(
-                () -> new NotificationNotFoundException("알림 읽음처리 실패: 존재하지 않는 알림입니다.")
+                () -> new NotFoundException(StatusCode.NOTIFICATION_NOT_FOUND)
         );
 
         if (!notification.getMember().equals(member)) {
@@ -95,7 +96,7 @@ public class FcmNotificationService {
                 "알림 삭제 실패: 권한이 없습니다.");
 
         CustomNoti notification = customNotiRepository.findById(id).orElseThrow(
-                ()->new NotificationNotFoundException("알림 삭제 실패: 존재하지 않는 알림입니다.")
+                () -> new NotFoundException(StatusCode.NOTIFICATION_NOT_FOUND)
         );
 
         customNotiRepository.delete(notification);
@@ -107,7 +108,7 @@ public class FcmNotificationService {
         Member member = checkMemberValid(principal, "읽은 알림 삭제 실패: 비로그인 사용자입니다.", "읽은 알림 삭제 실패: 권한이 없습니다.");
 
         customNotiRepository.deleteAllByMemberAndIsReadTrue(member);
-        
+
     }
 
     private Member checkMemberValid(CustomUserDetails principal, String noLoginMessage, String notValidUserMessage) {

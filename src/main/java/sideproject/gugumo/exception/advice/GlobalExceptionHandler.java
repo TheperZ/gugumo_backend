@@ -2,7 +2,9 @@ package sideproject.gugumo.exception.advice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,29 +16,9 @@ import sideproject.gugumo.response.ApiResponse;
 public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = {PostNotFoundException.class})
-    public ApiResponse<String> handlePostNotFoundException(PostNotFoundException e) {
-        log.error("[handlePostNotFoundException] ex : " + e.getMessage());
-        return ApiResponse.createFail(e.getMessage());
-    }
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = {CommentNotFoundException.class})
-    public ApiResponse<String> handleCommentNotFoundException(CommentNotFoundException e) {
-        log.error("[handleCommentNotFoundException] ex : " + e.getMessage());
-        return ApiResponse.createFail(e.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = {MeetingNotFoundException.class})
-    public ApiResponse<String> handleMeetingNotFoundException(MeetingNotFoundException e) {
-        log.error("[handleMeetingNotFoundException] ex : " + e.getMessage());
-        return ApiResponse.createFail(e.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = {BookmarkNotFoundException.class})
-    public ApiResponse<String> handleBookmarkNotFoundException(BookmarkNotFoundException e) {
-        log.error("[handleBookmarkNotFoundException] ex : " + e.getMessage());
+    @ExceptionHandler(value = {NotFoundException.class})
+    public ApiResponse<String> handleNotFoundException(NotFoundException e) {
+        log.error("[NotFoundException] ex : " + e.getMessage());
         return ApiResponse.createFail(e.getMessage());
     }
 
@@ -47,6 +29,18 @@ public class GlobalExceptionHandler {
         return ApiResponse.createFail(e.getMessage());
     }
 
+    /**
+     * spring validation 예외 처리
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ApiResponse<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("[MethodArgumentNotValidException] ex : " + e.getMessage());
+        return ApiResponse.createFail(e.getFieldError().getDefaultMessage());
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {DuplicateBookmarkException.class})
     public ApiResponse<String> handleDuplicateBookmarkException(DuplicateBookmarkException e) {
@@ -55,17 +49,44 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResponse<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error("[handleMethodArgumentNotValidException] ex : " + e.getMessage());
-        return ApiResponse.createFail(e.getFieldError().getDefaultMessage());
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler()
+    public ApiResponse<String> duplicateEmailExceptionHandler(DuplicateEmailException e) {
+        String exceptionMessage = e.getMessage();
+        log.error("[duplicateEmailExceptionHandler] ex : " + exceptionMessage);
+        return ApiResponse.createFail(exceptionMessage);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotificationNotFoundException.class)
-    public ApiResponse<String> handleNofiticationNotFoundException(NotificationNotFoundException e) {
-        log.error("[handleMethodArgumentNotValidException] ex : " + e.getMessage());
-        return ApiResponse.createFail(e.getMessage());
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    public ApiResponse<String> missingRequestHeaderExceptionHandler(MissingRequestHeaderException e) {
+        String exceptionMessage = e.getMessage();
+        log.error("[MissingRequestHeaderExceptionHandler] ex : " + exceptionMessage);
+        return ApiResponse.createFail("권한이 없습니다.");
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    public ApiResponse<String> badCredentialsExceptionHandler(BadCredentialsException e) {
+        String exceptionMessage = e.getMessage();
+        log.error("[BadCredentialsExceptionHandler] ex : " + exceptionMessage);
+        return ApiResponse.createFail(exceptionMessage);
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler
+    public ApiResponse<String> duplicateNicknameExceptionHandler(DuplicateNicknameException e) {
+        String exceptionMessage = e.getMessage();
+        log.error("[DuplicateNicknameExceptionHandler] ex : " + exceptionMessage);
+        return ApiResponse.createFail(exceptionMessage);
+    }
+
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler
+    public ApiResponse<String> exceptionHandler(Exception e) {
+        String exceptionMessage = e.getMessage();
+        log.error("[Exception] ex : " + exceptionMessage);
+        return ApiResponse.createFail(exceptionMessage);
     }
 }
