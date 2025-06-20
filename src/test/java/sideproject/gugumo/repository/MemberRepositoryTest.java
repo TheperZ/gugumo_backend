@@ -44,14 +44,14 @@ class MemberRepositoryTest {
 
     @Test
     @DisplayName("id를 통해 member를 조회할 수 있다.")
-    public void findOneMemberByIdTest() {
+    public void findByIdMemberByIdTest() {
         //given
         Member member = getJoinMemberBuild();
         memberRepository.save(member);
 
         //when
         Long id = member.getId();
-        Optional<Member> findMember = memberRepository.findOne(id);
+        Optional<Member> findMember = memberRepository.findById(id);
 
         //than
         assertThat(findMember.get()).isEqualTo(member);

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sideproject.gugumo.domain.dto.memberDto.*;
 import sideproject.gugumo.domain.entity.member.FavoriteSport;
 import sideproject.gugumo.domain.entity.member.Member;
+import sideproject.gugumo.domain.entity.member.MemberStatus;
 import sideproject.gugumo.exception.exception.DuplicateEmailException;
 import sideproject.gugumo.exception.exception.DuplicateNicknameException;
 import sideproject.gugumo.exception.exception.NotFoundException;
@@ -94,7 +95,7 @@ public class MemberService {
 
     public MemberInfoDto getMemberInfo(Long id) {
 
-        Member findMember = memberRepository.findOne(id)
+        Member findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         List<FavoriteSport> favoriteSportList = favoriteSportRepository.getFavoriteSports(findMember);
@@ -139,7 +140,7 @@ public class MemberService {
     @Transactional
     public void updateNickname(Long id, String nickname) {
 
-        Member findMember = memberRepository.findOne(id)
+        Member findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         validateDuplicateMemberByNickname(nickname);
@@ -166,7 +167,7 @@ public class MemberService {
     @Transactional
     public void updatePassword(Long id, String password) {
 
-        memberRepository.findOne(id)
+        memberRepository.findById(id)
                 .ifPresent(member -> member.updateMemberPassword(passwordEncoder.encode(password)));
     }
 
@@ -185,15 +186,15 @@ public class MemberService {
     @Transactional
     public void deleteMember(Long id) {
 
-//        Member findMember = memberRepository.findOne(id)
-//                .orElseThrow(() -> new UserNotFoundException("회원이 없습니다."));
-//
-//        if(findMember.getStatus() == MemberStatus.delete) {
-//            throw new UserNotFoundException("이미 탈퇴한 회원입니다.");
-//        }
-//
-//        findMember.deleteMember();
-        memberRepository.deleteMember(id);
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
+
+        if(findMember.getStatus() == MemberStatus.delete) {
+            throw new NotFoundException(MEMBER_NOT_FOUND);
+        }
+
+        findMember.deleteMember();
+
     }
 
     public String emailLogin(EmailLoginRequestDto emailLoginRequestDto) {

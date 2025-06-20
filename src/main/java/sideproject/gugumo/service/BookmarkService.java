@@ -22,7 +22,6 @@ import sideproject.gugumo.repository.BookmarkRepository;
 import sideproject.gugumo.repository.MemberRepository;
 import sideproject.gugumo.repository.PostRepository;
 import sideproject.gugumo.request.CreateBookmarkReq;
-import sideproject.gugumo.response.StatusCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -142,7 +141,7 @@ public class BookmarkService {
             throw new NoAuthorizationException(noLoginMessage);
         }
 
-        Member member = memberRepository.findOne(principal.getId())
+        Member member = memberRepository.findById(principal.getId())
                 .orElseThrow(
                         () -> new NoAuthorizationException(notValidUserMessage)
                 );
