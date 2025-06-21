@@ -131,12 +131,6 @@ public class MemberService {
         return findMember.isPresent();
     }
 
-    public Boolean isExistUsername(String username) {
-        Optional<Member> findMember = memberRepository.findByUsername(username);
-
-        return findMember.isPresent();
-    }
-
     @Transactional
     public void updateNickname(Long id, String nickname) {
 
@@ -195,25 +189,6 @@ public class MemberService {
 
         findMember.deleteMember();
 
-    }
-
-    public String emailLogin(EmailLoginRequestDto emailLoginRequestDto) {
-
-        Member findMember = memberRepository.findByUsername(emailLoginRequestDto.getUsername())
-                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
-
-        if (!passwordEncoder.matches(emailLoginRequestDto.getPassword(), findMember.getPassword())) {
-            throw new BadCredentialsException("비밀번호가 틀렸습니다.");
-        }
-
-        LoginCreateJwtDto loginDto = LoginCreateJwtDto.builder()
-                .id(findMember.getId())
-                .username(findMember.getUsername())
-                .role(findMember.getRole().name())
-                .requestTimeMs(LocalDateTime.now())
-                .build();
-
-        return jwtUtil.createJwt(loginDto);
     }
 
     // TODO USERNAME 수정(JWT 토큰 발급할 때 clame에 username 속성 빼기)

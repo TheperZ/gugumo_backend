@@ -21,10 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 
-        Member findMember = memberRepository.findById(Long.parseLong(id)).orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
+        Member findMember = memberRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         if (findMember.getStatus() == MemberStatus.delete) {
             throw new NotFoundException(MEMBER_NOT_FOUND);

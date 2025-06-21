@@ -11,6 +11,7 @@ public enum StatusCode {
 
     //회원 관련
     LOGIN(HttpStatus.OK, "로그인 완료"),
+    LOGIN_FAILURE(HttpStatus.UNAUTHORIZED, "로그인 실패"),
     KAKAO_LOGIN(HttpStatus.OK, "카카오 로그인 완료"),
     JOIN_MEMBER_WITH_EMAIL_AUTH(HttpStatus.CREATED, "이메일 회원가입 완료"),
     JOIN_MEMBER_WITH_KAKAO(HttpStatus.CREATED, "카카오 회원가입 완료"),

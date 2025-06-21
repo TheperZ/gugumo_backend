@@ -40,6 +40,14 @@ public class ApiResponse<T> {
                 .build();
     }
 
+    public static <T> ApiResponse<T> createFail(StatusCode statusCode) {
+        return ApiResponse.<T>builder()
+                .status(SUCCESS_STATUS)
+                .data(null)
+                .message(statusCode.getCustomMessage())
+                .build();
+    }
+
     public static <T> ApiResponse<T> createFail(T data, String failMessage) {
         return ApiResponse.<T>builder()
                 .status(FAIL_STATUS)
