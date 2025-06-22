@@ -22,8 +22,8 @@ import sideproject.gugumo.request.UpdateCmntReq;
 
 import java.util.List;
 
-import static sideproject.gugumo.response.StatusCode.COMMENT_NOT_FOUND;
-import static sideproject.gugumo.response.StatusCode.POST_NOT_FOUND;
+
+import static sideproject.gugumo.response.StatusCode.*;
 
 @Service
 @RequiredArgsConstructor

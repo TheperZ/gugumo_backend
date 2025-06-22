@@ -1,4 +1,4 @@
-package sideproject.gugumo.security;
+package sideproject.gugumo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
