@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -50,10 +51,13 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/login", "/").permitAll()
-                        .requestMatchers("/user").hasRole("USER")
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/v1/login/**").permitAll()
+                        .requestMatchers("/api/v1/kakao/member").permitAll()
+                        .requestMatchers("/api/v2/members").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/posts", "/api/v1/posts/{post_id}", "/api/v1/posts/recommend").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/posts/{post_id}/comments").permitAll()
+                        .requestMatchers("/api/v1/email-verifications/**").permitAll()
+                        .anyRequest().authenticated()
                 )
         ;
 

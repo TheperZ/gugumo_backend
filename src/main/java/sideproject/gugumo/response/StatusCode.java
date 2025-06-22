@@ -11,7 +11,6 @@ public enum StatusCode {
 
     //회원 관련
     LOGIN(HttpStatus.OK, "로그인 완료"),
-    LOGIN_FAILURE(HttpStatus.UNAUTHORIZED, "로그인 실패"),
     KAKAO_LOGIN(HttpStatus.OK, "카카오 로그인 완료"),
     JOIN_MEMBER_WITH_EMAIL_AUTH(HttpStatus.CREATED, "이메일 회원가입 완료"),
     JOIN_MEMBER_WITH_KAKAO(HttpStatus.CREATED, "카카오 회원가입 완료"),
@@ -22,6 +21,7 @@ public enum StatusCode {
     DELETE_MEMBER(HttpStatus.OK, "회원 탈퇴 완료"),
     RESET_PASSWORD(HttpStatus.OK, "비밀번호 초기화 완료"),
 
+    LOGIN_FAILURE(HttpStatus.UNAUTHORIZED, "로그인 실패"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원이 존재하지 않음"),
 
 

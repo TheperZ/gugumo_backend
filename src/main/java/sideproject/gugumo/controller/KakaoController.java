@@ -55,6 +55,7 @@ public class KakaoController {
         return ResponseEntity.status(KAKAO_LOGIN.getHttpCode()).body(ApiResponse.createSuccess(KAKAO_LOGIN));
     }
 
+    //TODO: 이메일 회원가입 API와의 병합 고려
     @PostMapping("/api/v1/kakao/member")
     public ResponseEntity<ApiResponse<Void>> join(@RequestBody SignUpKakaoMemberDto signUpKakaoMemberDto) {
 
