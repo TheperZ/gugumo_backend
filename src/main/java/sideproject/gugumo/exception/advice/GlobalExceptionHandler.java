@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {NotFoundException.class})
     public ApiResponse<String> handleNotFoundException(NotFoundException e) {
         log.error("[NotFoundException] ex : " + e.getMessage());
-        return ApiResponse.createFail(e.getMessage());
+        return ApiResponse.createFail(e.getStatusCode());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

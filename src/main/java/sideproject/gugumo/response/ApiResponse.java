@@ -48,14 +48,6 @@ public class ApiResponse<T> {
                 .build();
     }
 
-    public static <T> ApiResponse<T> createFail(T data, String failMessage) {
-        return ApiResponse.<T>builder()
-                .status(FAIL_STATUS)
-                .data(data)
-                .message(failMessage)
-                .build();
-    }
-
     public static <T> ApiResponse<T> createFail(String failMessage) {
         return ApiResponse.<T>builder()
                 .status(FAIL_STATUS)
