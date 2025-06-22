@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
-import sideproject.gugumo.domain.dto.memberDto.CustomUserInfoDto;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
 import sideproject.gugumo.exception.exception.NotFoundException;
@@ -30,13 +29,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new NotFoundException(MEMBER_NOT_FOUND);
         }
 
-        CustomUserInfoDto customUserInfoDto = CustomUserInfoDto.builder()
+        return CustomUserDetails.builder()
                 .id(findMember.getId())
                 .username(findMember.getUsername())
                 .role(findMember.getRole())
                 .password(findMember.getPassword())
                 .build();
-
-        return new CustomUserDetails(customUserInfoDto);
     }
 }

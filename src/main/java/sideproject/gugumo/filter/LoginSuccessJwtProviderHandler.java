@@ -9,13 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
-import sideproject.gugumo.domain.dto.memberDto.CustomUserInfoDto;
 import sideproject.gugumo.domain.dto.memberDto.LoginCreateJwtDto;
 import sideproject.gugumo.jwt.JwtUtil;
-import sideproject.gugumo.redis.RedisUtil;
 import sideproject.gugumo.response.ApiResponse;
 import sideproject.gugumo.response.StatusCode;
 
@@ -42,13 +39,10 @@ public class LoginSuccessJwtProviderHandler extends SimpleUrlAuthenticationSucce
 
     private void addToken(HttpServletResponse response, CustomUserDetails principal) {
 
-
-        CustomUserInfoDto customUserInfoDto = principal.getCustomUserInfoDto();
-
         LoginCreateJwtDto loginCreateJwtDto = LoginCreateJwtDto.builder()
-                .id(customUserInfoDto.getId())
-                .username(customUserInfoDto.getUsername())
-                .role(customUserInfoDto.getRole().toString())
+                .id(principal.getId())
+                .username(principal.getUsername())
+                .role(principal.getRole().toString())
                 .requestTimeMs(LocalDateTime.now())
                 .build();
 
