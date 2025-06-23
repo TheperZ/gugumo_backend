@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sideproject.gugumo.domain.dto.CmntDto;
 import sideproject.gugumo.domain.dto.memberDto.CustomUserDetails;
-import sideproject.gugumo.domain.entity.Cmnt;
+import sideproject.gugumo.domain.entity.Comment;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
 import sideproject.gugumo.domain.entity.post.Post;
@@ -46,22 +46,22 @@ public class CmntService {
                 .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         //삭제된 댓글의 대댓글도 작성할 수 있어야 함->deleteFalse를 확인하지 않음
-        Cmnt parentCmnt = req.getParentCommentId() != null ?
+        Comment parentComment = req.getParentCommentId() != null ?
                 cmntRepository.findById(req.getParentCommentId())
                         .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND)) : null;
 
-        Cmnt cmnt = Cmnt.builder()
+        Comment comment = Comment.builder()
                 .post(targetPost)
-                .parentCmnt(parentCmnt)
+                .parentComment(parentComment)
                 .member(author)
                 .content(req.getContent())
                 .build();
 
 
-        cmntRepository.save(cmnt);
+        cmntRepository.save(comment);
         targetPost.increaseCommentCnt();
 
-        eventPublisher.publishEvent(new CommentFcmEvent(cmnt, author));
+        eventPublisher.publishEvent(new CommentFcmEvent(comment, author));
 
     }
 
@@ -90,16 +90,16 @@ public class CmntService {
         Member member = checkMemberValid(principal, "댓글 갱신 실패: 비로그인 사용자입니다.",
                 "댓글 갱신 실패: 권한이 없습니다.");
 
-        Cmnt cmnt = cmntRepository.findByIdAndIsDeleteFalse(commentId)
+        Comment comment = cmntRepository.findByIdAndIsDeleteFalse(commentId)
                 .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND));
 
 
         //댓글 작성자와 토큰 유저 정보가 다를 경우 처리
-        if (!cmnt.getMember().equals(member)) {
+        if (!comment.getMember().equals(member)) {
             throw new NoAuthorizationException("댓글 갱신 실패: 권한이 없습니다.");
         }
 
-        cmnt.update(req);
+        comment.update(req);
 
 
     }
@@ -110,16 +110,16 @@ public class CmntService {
         Member member = checkMemberValid(principal, "댓글 삭제 실패: 비로그인 사용자입니다.",
                 "댓글 삭제 실패: 권한이 없습니다.");
 
-        Cmnt cmnt = cmntRepository.findByIdAndIsDeleteFalse(commentId)
+        Comment comment = cmntRepository.findByIdAndIsDeleteFalse(commentId)
                 .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND));
 
-        if (!cmnt.getMember().equals(member)) {
+        if (!comment.getMember().equals(member)) {
             throw new NoAuthorizationException("댓글 삭제 실패: 권한이 없습니다.");
         }
 
 
-        cmnt.tempDelete();
-        cmnt.getPost().decreaseCommentCnt();
+        comment.tempDelete();
+        comment.getPost().decreaseCommentCnt();
 
     }
 

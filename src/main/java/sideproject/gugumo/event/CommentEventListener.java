@@ -7,7 +7,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
-import sideproject.gugumo.domain.entity.Cmnt;
+import sideproject.gugumo.domain.entity.Comment;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.notification.CustomNoti;
 import sideproject.gugumo.domain.entity.notification.FcmNotificationToken;
@@ -35,8 +35,8 @@ public class CommentEventListener {
     @TransactionalEventListener
     public void sendPostWriter(CommentFcmEvent event) throws FirebaseMessagingException {
         log.info("[{}] 알림 전송 메서드 동작", Thread.currentThread().getStackTrace()[1].getMethodName());
-        Cmnt cmnt = event.getCmnt();
-        Optional<Post> targetPost = postRepository.findById(cmnt.getPost().getId());
+        Comment comment = event.getComment();
+        Optional<Post> targetPost = postRepository.findById(comment.getPost().getId());
         if (targetPost.isEmpty() || !event.isCmntPostAuthorEq(targetPost.get())) {
             log.info("없는 게시글이거나 게시글 작성자와 댓글 작성자가 일치함");
             return;
@@ -44,7 +44,7 @@ public class CommentEventListener {
         Post post = targetPost.get();
         Member postWriter = post.getMember();
 
-        String message = cmnt.getContent();
+        String message = comment.getContent();
 
         CustomNoti noti = CustomNoti.builder()
                 .message(message)

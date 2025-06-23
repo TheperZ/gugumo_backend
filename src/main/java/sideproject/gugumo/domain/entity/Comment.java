@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Cmnt {
+@Table(name = "'comment'")
+public class Comment {
 
     @Id
     @GeneratedValue
@@ -41,7 +42,7 @@ public class Cmnt {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_cmnt_id")
-    private Cmnt parentCmnt;
+    private Comment parentComment;
 
     //부모 댓글이 삭제되었을 경우->parentComment==null->얘가 부모 댓글이라 생각될 수 있음
     //위 이유에 의해 필요한 변수
@@ -58,17 +59,17 @@ public class Cmnt {
 
 
     @Builder
-    public Cmnt(Post post, Cmnt parentCmnt, String content, Member member) {
+    public Comment(Post post, Comment parentComment, String content, Member member) {
         this.content = content;
         this.post = post;
-        this.parentCmnt = parentCmnt;
+        this.parentComment = parentComment;
         this.member = member;
-        if (parentCmnt == null) {
+        if (parentComment == null) {
             this.isNotRoot = false;
             this.orderNum = post.getCommentCnt();
         } else {
             this.isNotRoot = true;
-            this.orderNum = parentCmnt.getOrderNum();
+            this.orderNum = parentComment.getOrderNum();
 
         }
         this.createDate = LocalDateTime.now();

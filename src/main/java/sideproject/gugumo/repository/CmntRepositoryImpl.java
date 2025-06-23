@@ -10,7 +10,7 @@ import sideproject.gugumo.domain.entity.member.MemberStatus;
 
 import java.util.List;
 
-import static sideproject.gugumo.domain.entity.QCmnt.cmnt;
+import static sideproject.gugumo.domain.entity.QComment.comment;
 import static sideproject.gugumo.domain.entity.member.QMember.member;
 import static sideproject.gugumo.domain.entity.post.QPost.post;
 
@@ -31,23 +31,23 @@ public class CmntRepositoryImpl implements CmntRepositoryCustom {
 
         //isYours, isAuthorExpired 추가
         List<CmntDto> result = queryFactory.select(new QCmntDto(
-                        cmnt.id,
-                        cmnt.member.nickname,
-                        user != null ? cmnt.member.eq(user) : Expressions.FALSE,
-                        cmnt.member.isNull().or(cmnt.member.status.eq(MemberStatus.delete)),
-                        cmnt.content,
-                        cmnt.createDate,
-                        cmnt.isNotRoot,
-                        cmnt.parentCmnt.id,
-                        cmnt.orderNum
+                        comment.id,
+                        comment.member.nickname,
+                        user != null ? comment.member.eq(user) : Expressions.FALSE,
+                        comment.member.isNull().or(comment.member.status.eq(MemberStatus.delete)),
+                        comment.content,
+                        comment.createDate,
+                        comment.isNotRoot,
+                        comment.parentComment.id,
+                        comment.orderNum
                 ))
-                .from(cmnt)
-                .join(cmnt.post, post)
-                .leftJoin(cmnt.member, member)
+                .from(comment)
+                .join(comment.post, post)
+                .leftJoin(comment.member, member)
                 .where(
-                        cmnt.post.id.eq(postId), cmnt.isDelete.isFalse()
+                        comment.post.id.eq(postId), comment.isDelete.isFalse()
                 )
-                .orderBy(cmnt.orderNum.asc(), cmnt.createDate.asc())
+                .orderBy(comment.orderNum.asc(), comment.createDate.asc())
                 .fetch();
 
         return result;

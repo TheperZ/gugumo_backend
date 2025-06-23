@@ -2,7 +2,7 @@ package sideproject.gugumo.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import sideproject.gugumo.domain.entity.Cmnt;
+import sideproject.gugumo.domain.entity.Comment;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.post.Post;
 
@@ -11,7 +11,7 @@ import sideproject.gugumo.domain.entity.post.Post;
 public class CommentFcmEvent {
 
 
-    private Cmnt cmnt;
+    private Comment comment;
     private Member cmntAuthor;
 
     public boolean isCmntPostAuthorEq(Post post) {
