@@ -22,7 +22,6 @@ import sideproject.gugumo.repository.BookmarkRepository;
 import sideproject.gugumo.repository.MemberRepository;
 import sideproject.gugumo.repository.PostRepository;
 import sideproject.gugumo.request.CreateBookmarkReq;
-import sideproject.gugumo.response.StatusCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +47,7 @@ public class BookmarkService {
                 .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         if (bookmarkRepository.existsByMemberAndPost(member, post)) {
-            throw new DuplicateBookmarkException("북마크 등록 실패: 이미 등록된 북마크입니다.");
+            throw new DuplicateResourceException(BOOKMARK_ALREADY_EXISTS);
         }
 
         Bookmark bookmark = Bookmark.builder()
@@ -142,7 +141,7 @@ public class BookmarkService {
             throw new NoAuthorizationException(noLoginMessage);
         }
 
-        Member member = memberRepository.findOne(principal.getId())
+        Member member = memberRepository.findById(principal.getId())
                 .orElseThrow(
                         () -> new NoAuthorizationException(notValidUserMessage)
                 );

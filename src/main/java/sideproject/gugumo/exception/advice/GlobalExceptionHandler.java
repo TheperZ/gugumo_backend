@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {NotFoundException.class})
     public ApiResponse<String> handleNotFoundException(NotFoundException e) {
         log.error("[NotFoundException] ex : " + e.getMessage());
-        return ApiResponse.createFail(e.getMessage());
+        return ApiResponse.createFail(e.getStatusCode());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -27,6 +27,13 @@ public class GlobalExceptionHandler {
     public ApiResponse<String> handleNoAuthorizationException(NoAuthorizationException e) {
         log.error("[handleNoAuthorizationException] ex : " + e.getMessage());
         return ApiResponse.createFail(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(value = {DuplicateResourceException.class})
+    public ApiResponse<String> handleDuplicateResourceException(DuplicateResourceException e) {
+        log.error("[DuplicateResourceException] ex : " + e.getMessage());
+        return ApiResponse.createFail(e.getStatusCode());
     }
 
     /**
@@ -41,21 +48,6 @@ public class GlobalExceptionHandler {
         return ApiResponse.createFail(e.getFieldError().getDefaultMessage());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = {DuplicateBookmarkException.class})
-    public ApiResponse<String> handleDuplicateBookmarkException(DuplicateBookmarkException e) {
-        log.error("[handleDuplicateBookmarkException] ex : " + e.getMessage());
-        return ApiResponse.createFail(e.getMessage());
-    }
-
-
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler()
-    public ApiResponse<String> duplicateEmailExceptionHandler(DuplicateEmailException e) {
-        String exceptionMessage = e.getMessage();
-        log.error("[duplicateEmailExceptionHandler] ex : " + exceptionMessage);
-        return ApiResponse.createFail(exceptionMessage);
-    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
@@ -70,14 +62,6 @@ public class GlobalExceptionHandler {
     public ApiResponse<String> badCredentialsExceptionHandler(BadCredentialsException e) {
         String exceptionMessage = e.getMessage();
         log.error("[BadCredentialsExceptionHandler] ex : " + exceptionMessage);
-        return ApiResponse.createFail(exceptionMessage);
-    }
-
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler
-    public ApiResponse<String> duplicateNicknameExceptionHandler(DuplicateNicknameException e) {
-        String exceptionMessage = e.getMessage();
-        log.error("[DuplicateNicknameExceptionHandler] ex : " + exceptionMessage);
         return ApiResponse.createFail(exceptionMessage);
     }
 

@@ -1,8 +1,11 @@
 package sideproject.gugumo.domain.dto.memberDto;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import sideproject.gugumo.domain.entity.member.MemberRole;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,10 +13,18 @@ import java.util.Collection;
 @Getter
 public class CustomUserDetails implements UserDetails {
 
-    private final CustomUserInfoDto customUserInfoDto;
+    private String username;
+    private Long id;
+    private MemberRole role;
+    private String password;
 
-    public CustomUserDetails(CustomUserInfoDto customUserInfoDto) {
-        this.customUserInfoDto = customUserInfoDto;
+    @Builder
+    public CustomUserDetails(String username, Long id, MemberRole role, String password) {
+        this.username = username;
+        this.id = id;
+        this.role = role;
+        this.password = password;
+
     }
 
     @Override
@@ -24,7 +35,7 @@ public class CustomUserDetails implements UserDetails {
         authorities.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return customUserInfoDto.getRole().toString();
+                return role.toString();
             }
         });
 
@@ -33,16 +44,16 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return customUserInfoDto.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return customUserInfoDto.getUsername();
+        return username;
     }
 
     public long getId() {
-        return customUserInfoDto.getId();
+        return id;
     }
 
     @Override

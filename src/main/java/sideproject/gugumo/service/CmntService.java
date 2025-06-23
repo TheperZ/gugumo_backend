@@ -22,8 +22,8 @@ import sideproject.gugumo.request.UpdateCmntReq;
 
 import java.util.List;
 
-import static sideproject.gugumo.response.StatusCode.COMMENT_NOT_FOUND;
-import static sideproject.gugumo.response.StatusCode.POST_NOT_FOUND;
+
+import static sideproject.gugumo.response.StatusCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -69,7 +69,7 @@ public class CmntService {
 
         Member user =
                 principal == null ?
-                        null : memberRepository.findOne(principal.getId())
+                        null : memberRepository.findById(principal.getId())
                         .orElseThrow(
                                 () -> new NoAuthorizationException("댓글 조회 실패: 권한이 없습니다.")
                         );
@@ -128,7 +128,7 @@ public class CmntService {
             throw new NoAuthorizationException(noLoginMessage);
         }
 
-        Member author = memberRepository.findOne(principal.getId())
+        Member author = memberRepository.findById(principal.getId())
                 .orElseThrow(
                         () -> new NoAuthorizationException(notValidUserMessage)
                 );

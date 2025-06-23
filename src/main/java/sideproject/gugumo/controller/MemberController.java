@@ -21,17 +21,7 @@ public class MemberController {
     private final MemberService memberService;
     private final MailSenderService mailService;
 
-    @PostMapping("/api/v1/login/email")
-    public ResponseEntity<ApiResponse<String>> emailLogin(HttpServletResponse response, @RequestBody EmailLoginRequestDto emailLoginRequestDto) {
-
-        String token = memberService.emailLogin(emailLoginRequestDto);
-        response.addHeader("Authorization", "Bearer " + token);
-
-        return ResponseEntity.status(LOGIN.getHttpCode()).body(ApiResponse.createSuccess(LOGIN));
-    }
-
     @PostMapping("/api/v2/members")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ApiResponse<Long>> joinMemberWithEmailAuth(@RequestBody @Valid SignUpEmailMemberDto signUpEmailMemberDto) {
 
         mailService.checkAuthNum(signUpEmailMemberDto.getUsername(), signUpEmailMemberDto.getEmailAuthNum());

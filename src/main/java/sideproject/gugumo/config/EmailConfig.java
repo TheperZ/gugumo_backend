@@ -1,4 +1,4 @@
-package sideproject.gugumo.security;
+package sideproject.gugumo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-public class emailConfig {
+public class EmailConfig {
 
     @Bean
     public JavaMailSender mailSender() {

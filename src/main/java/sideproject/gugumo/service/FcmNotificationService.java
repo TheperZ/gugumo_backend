@@ -116,7 +116,7 @@ public class FcmNotificationService {
             throw new NoAuthorizationException(noLoginMessage);
         }
 
-        Member author = memberRepository.findOne(principal.getId())
+        Member author = memberRepository.findById(principal.getId())
                 .orElseThrow(
                         () -> new NoAuthorizationException(notValidUserMessage)
                 );

@@ -19,10 +19,8 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class MailSenderService {
 
-    @Autowired
-    private JavaMailSender mailSender;
-    @Autowired
-    private RedisUtil redisUtil;
+    private final JavaMailSender mailSender;
+    private final RedisUtil redisUtil;
 
     private int authNumber;
 

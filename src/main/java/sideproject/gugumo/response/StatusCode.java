@@ -21,7 +21,10 @@ public enum StatusCode {
     DELETE_MEMBER(HttpStatus.OK, "회원 탈퇴 완료"),
     RESET_PASSWORD(HttpStatus.OK, "비밀번호 초기화 완료"),
 
+    LOGIN_FAILURE(HttpStatus.UNAUTHORIZED, "로그인 실패"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원이 존재하지 않음"),
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 이메일"),
+    NICKNAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 닉네임"),
 
 
     //게시글 관련
@@ -49,6 +52,7 @@ public enum StatusCode {
     DELETE_BOOKMARK(HttpStatus.OK, "북마크 삭제 완료"),
 
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "북마크가 존재하지 않음"),
+    BOOKMARK_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 등록된 북마크"),
 
 
     //알림 관련
