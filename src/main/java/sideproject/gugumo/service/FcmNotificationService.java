@@ -35,7 +35,7 @@ public class FcmNotificationService {
         Member member = checkMemberValid(principal, "알림 조회 실패: 비로그인 사용자입니다.",
                 "알림 조회 실패: 권한이 없습니다.");
 
-        List<CustomNoti> result = customNotiRepository.findByMemberOrderByCreateDateDesc(member);
+        List<CustomNoti> result = customNotiRepository.findByMemberOrderByCreatedAtDesc(member);
 
         return result.stream()
                 .map(n -> convertToDto(n))
@@ -50,7 +50,7 @@ public class FcmNotificationService {
                     .id(customNoti.getId())
                     .message(customNoti.getMessage())
                     .notificationType(NotificationType.COMMENT)
-                    .createDate(customNoti.getCreateDate())
+                    .createdAt(customNoti.getCreatedAt())
                     .isRead(customNoti.isRead())
                     .postId(customNoti.getPostId())
                     .build();
@@ -82,7 +82,7 @@ public class FcmNotificationService {
         Member member = checkMemberValid(principal, "알림 모두 읽음처리 실패: 비로그인 사용자입니다.",
                 "알림 모두 읽음처리 실패: 권한이 없습니다.");
 
-        List<CustomNoti> notifications = customNotiRepository.findByMemberOrderByCreateDateDesc(member);
+        List<CustomNoti> notifications = customNotiRepository.findByMemberOrderByCreatedAtDesc(member);
 
         for (CustomNoti notification : notifications) {
             notification.read();

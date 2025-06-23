@@ -181,9 +181,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private OrderSpecifier createOrderSpecifier(SortType sortType) {
         return switch (sortType) {
-            case OLD -> new OrderSpecifier<>(Order.ASC, post.createDate);
+            case OLD -> new OrderSpecifier<>(Order.ASC, post.createdAt);
             case LIKE -> new OrderSpecifier<>(Order.DESC, post.viewCount);
-            default -> new OrderSpecifier<>(Order.DESC, post.createDate);
+            default -> new OrderSpecifier<>(Order.DESC, post.createdAt);
         };
     }
 

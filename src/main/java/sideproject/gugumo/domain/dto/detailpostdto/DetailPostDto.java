@@ -34,7 +34,7 @@ public abstract class DetailPostDto {
 
     private String title;
     private String content;
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdAt;
 
     private MeetingStatus meetingStatus;
     private long viewCount;

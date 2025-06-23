@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import sideproject.gugumo.domain.entity.BaseEntity;
 import sideproject.gugumo.domain.entity.meeting.Meeting;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.request.UpdatePostReq;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -29,10 +30,6 @@ public class Post {
     @NotNull
     @Column(length = 10000)
     private String content;
-
-    @NotNull
-    @Builder.Default
-    private LocalDateTime createDate = LocalDateTime.now();
 
     @NotNull
     @Builder.Default

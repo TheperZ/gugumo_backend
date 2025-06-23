@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "'comment'")
-public class Comment {
+public class Comment extends BaseEntity{
 
     @Id
     @GeneratedValue
-    @Column(name = "cmnt_id")
+    @Column(name = "comment_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,11 +37,8 @@ public class Comment {
     @NotNull
     private String content;
 
-    @NotNull
-    private LocalDateTime createDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_cmnt_id")
+    @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
     //부모 댓글이 삭제되었을 경우->parentComment==null->얘가 부모 댓글이라 생각될 수 있음
@@ -72,7 +69,6 @@ public class Comment {
             this.orderNum = parentComment.getOrderNum();
 
         }
-        this.createDate = LocalDateTime.now();
         this.isDelete = false;
     }
 

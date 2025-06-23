@@ -36,7 +36,7 @@ public class CmntRepositoryImpl implements CmntRepositoryCustom {
                         user != null ? comment.member.eq(user) : Expressions.FALSE,
                         comment.member.isNull().or(comment.member.status.eq(MemberStatus.delete)),
                         comment.content,
-                        comment.createDate,
+                        comment.createdAt,
                         comment.isNotRoot,
                         comment.parentComment.id,
                         comment.orderNum
@@ -47,7 +47,7 @@ public class CmntRepositoryImpl implements CmntRepositoryCustom {
                 .where(
                         comment.post.id.eq(postId), comment.isDelete.isFalse()
                 )
-                .orderBy(comment.orderNum.asc(), comment.createDate.asc())
+                .orderBy(comment.orderNum.asc(), comment.createdAt.asc())
                 .fetch();
 
         return result;

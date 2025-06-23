@@ -182,7 +182,7 @@ public class PostService {
                     .location(targetMeeting.getLocation())
                     .title(targetPost.getTitle())
                     .content(targetPost.getContent())
-                    .createdDateTime(targetPost.getCreateDate())
+                    .createdAt(targetPost.getCreatedAt())
                     .meetingStatus(targetMeeting.getStatus())
                     .viewCount(targetPost.getViewCount())
                     .isYours(
@@ -209,7 +209,7 @@ public class PostService {
                     .location(targetMeeting.getLocation())
                     .title(targetPost.getTitle())
                     .content(targetPost.getContent())
-                    .createdDateTime(targetPost.getCreateDate())
+                    .createdAt(targetPost.getCreatedAt())
                     .meetingStatus(targetMeeting.getStatus())
                     .viewCount(targetPost.getViewCount())
                     .isYours(
