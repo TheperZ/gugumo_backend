@@ -3,8 +3,8 @@ package sideproject.gugumo.repository;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import sideproject.gugumo.domain.dto.CmntDto;
-import sideproject.gugumo.domain.dto.QCmntDto;
+import sideproject.gugumo.domain.dto.CommentDto;
+import sideproject.gugumo.domain.dto.QCommentDto;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
 
@@ -15,22 +15,22 @@ import static sideproject.gugumo.domain.entity.member.QMember.member;
 import static sideproject.gugumo.domain.entity.post.QPost.post;
 
 
-public class CmntRepositoryImpl implements CmntRepositoryCustom {
+public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
 
-    public CmntRepositoryImpl(EntityManager em) {
+    public CommentRepositoryImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
 
     @Override
-    public List<CmntDto> findComment(Long postId, Member user) {
+    public List<CommentDto> findComment(Long postId, Member user) {
 
 
         //isYours, isAuthorExpired 추가
-        List<CmntDto> result = queryFactory.select(new QCmntDto(
+        List<CommentDto> result = queryFactory.select(new QCommentDto(
                         comment.id,
                         comment.member.nickname,
                         user != null ? comment.member.eq(user) : Expressions.FALSE,

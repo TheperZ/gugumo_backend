@@ -12,10 +12,10 @@ public class CommentFcmEvent {
 
 
     private Comment comment;
-    private Member cmntAuthor;
+    private Member commentAuthor;
 
-    public boolean isCmntPostAuthorEq(Post post) {
-        return !cmntAuthor.getId().equals(post.getMember().getId());
+    public boolean isCommentPostAuthorEq(Post post) {
+        return !commentAuthor.getId().equals(post.getMember().getId());
     }
 
 }

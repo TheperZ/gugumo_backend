@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.post.Post;
-import sideproject.gugumo.request.UpdateCmntReq;
-
-import java.time.LocalDateTime;
+import sideproject.gugumo.request.UpdateCommentReq;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -76,7 +74,7 @@ public class Comment extends BaseEntity{
         this.isDelete = true;
     }
 
-    public void update(UpdateCmntReq req) {
+    public void update(UpdateCommentReq req) {
         this.content = req.getContent();
     }
 }
