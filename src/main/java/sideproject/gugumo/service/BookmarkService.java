@@ -47,7 +47,7 @@ public class BookmarkService {
                 .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         if (bookmarkRepository.existsByMemberAndPost(member, post)) {
-            throw new DuplicateBookmarkException("북마크 등록 실패: 이미 등록된 북마크입니다.");
+            throw new DuplicateResourceException(BOOKMARK_ALREADY_EXISTS);
         }
 
         Bookmark bookmark = Bookmark.builder()

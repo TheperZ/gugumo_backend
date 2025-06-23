@@ -2,16 +2,17 @@ package sideproject.gugumo.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sideproject.gugumo.domain.dto.memberDto.*;
+import sideproject.gugumo.domain.dto.memberDto.LoginCreateJwtDto;
+import sideproject.gugumo.domain.dto.memberDto.MemberInfoDto;
+import sideproject.gugumo.domain.dto.memberDto.SignUpEmailMemberDto;
+import sideproject.gugumo.domain.dto.memberDto.SignUpKakaoMemberDto;
 import sideproject.gugumo.domain.entity.member.FavoriteSport;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
-import sideproject.gugumo.exception.exception.DuplicateEmailException;
-import sideproject.gugumo.exception.exception.DuplicateNicknameException;
+import sideproject.gugumo.exception.exception.DuplicateResourceException;
 import sideproject.gugumo.exception.exception.NotFoundException;
 import sideproject.gugumo.jwt.JwtUtil;
 import sideproject.gugumo.repository.FavoriteSportRepository;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static sideproject.gugumo.response.StatusCode.MEMBER_NOT_FOUND;
+import static sideproject.gugumo.response.StatusCode.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -146,7 +147,7 @@ public class MemberService {
         Optional<Member> findMember = memberRepository.findByUsername(username);
 
         if (findMember.isPresent()) {
-            throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
+            throw new DuplicateResourceException(EMAIL_ALREADY_EXISTS);
         }
     }
 
@@ -154,7 +155,7 @@ public class MemberService {
         Optional<Member> findMember = memberRepository.findByNickname(nickname);
 
         if (findMember.isPresent()) {
-            throw new DuplicateNicknameException("이미 존재하는 닉네임입니다.");
+            throw new DuplicateResourceException(NICKNAME_ALREADY_EXISTS);
         }
     }
 
@@ -183,7 +184,7 @@ public class MemberService {
         Member findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
-        if(findMember.getStatus() == MemberStatus.delete) {
+        if (findMember.getStatus() == MemberStatus.delete) {
             throw new NotFoundException(MEMBER_NOT_FOUND);
         }
 
