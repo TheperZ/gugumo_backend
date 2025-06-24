@@ -49,9 +49,6 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
-    @NotNull
-    @Builder.Default
-    private long commentCnt = 0L;
 
 
     public void addViewCount() {
@@ -74,11 +71,4 @@ public class Post extends BaseEntity {
         this.isDelete = true;
     }
 
-    public void increaseCommentCnt() {
-        this.commentCnt++;
-    }
-
-    public void decreaseCommentCnt() {
-        this.commentCnt--;
-    }
 }

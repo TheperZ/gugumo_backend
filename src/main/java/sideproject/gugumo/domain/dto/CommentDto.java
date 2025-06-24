@@ -5,12 +5,15 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentDto {
 
     private Long commentId;
+    private Long parentCommentId;
 
     private String author;
     private boolean isYours;
@@ -18,21 +21,17 @@ public class CommentDto {
 
     private String content;
     private LocalDateTime createdAt;
-    private boolean isNotRoot;
-    private Long parentCommentId;       //부모가 존재하지 않으면 null 반환->값을 주지 않음
-    private long orderNum;
+    private List<CommentDto> childComments = new ArrayList<>();
 
 
     @QueryProjection
-    public CommentDto(Long commentId, String author, boolean isYours, boolean isAuthorExpired, String content, LocalDateTime createdAt, boolean isNotRoot, Long parentCommentId, long orderNum) {
+    public CommentDto(Long commentId, Long parentCommentId, String author, boolean isYours, boolean isAuthorExpired, String content, LocalDateTime createdAt) {
         this.commentId = commentId;
+        this.parentCommentId = parentCommentId;
         this.author = author;
         this.isYours = isYours;
         this.isAuthorExpired = isAuthorExpired;
         this.content = content;
         this.createdAt = createdAt;
-        this.isNotRoot = isNotRoot;
-        this.parentCommentId = parentCommentId;
-        this.orderNum = orderNum;
     }
 }

@@ -7,6 +7,7 @@ import sideproject.gugumo.domain.dto.CommentDto;
 import sideproject.gugumo.domain.dto.QCommentDto;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.member.MemberStatus;
+import sideproject.gugumo.domain.entity.member.QMember;
 
 import java.util.List;
 
@@ -26,28 +27,25 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
 
     @Override
-    public List<CommentDto> findComment(Long postId, Member user) {
+    public List<CommentDto> findComment(Long postId, Member member) {
 
 
         //isYours, isAuthorExpired 추가
         List<CommentDto> result = queryFactory.select(new QCommentDto(
                         comment.id,
+                        comment.parentComment.id,
                         comment.member.nickname,
-                        user != null ? comment.member.eq(user) : Expressions.FALSE,
+                        member != null ? comment.member.eq(member) : Expressions.FALSE,
                         comment.member.isNull().or(comment.member.status.eq(MemberStatus.delete)),
                         comment.content,
-                        comment.createdAt,
-                        comment.isNotRoot,
-                        comment.parentComment.id,
-                        comment.orderNum
+                        comment.createdAt
                 ))
                 .from(comment)
                 .join(comment.post, post)
-                .leftJoin(comment.member, member)
+                .leftJoin(comment.member, QMember.member)
                 .where(
-                        comment.post.id.eq(postId), comment.isDelete.isFalse()
+                        comment.post.id.eq(postId), comment.isDeleted.isFalse()
                 )
-                .orderBy(comment.orderNum.asc(), comment.createdAt.asc())
                 .fetch();
 
         return result;

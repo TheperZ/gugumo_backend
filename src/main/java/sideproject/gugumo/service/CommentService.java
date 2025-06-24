@@ -20,10 +20,13 @@ import sideproject.gugumo.repository.PostRepository;
 import sideproject.gugumo.request.CreateCommentReq;
 import sideproject.gugumo.request.UpdateCommentReq;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-
-import static sideproject.gugumo.response.StatusCode.*;
+import static sideproject.gugumo.response.StatusCode.COMMENT_NOT_FOUND;
+import static sideproject.gugumo.response.StatusCode.POST_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -45,41 +48,79 @@ public class CommentService {
         Post targetPost = postRepository.findByIdAndIsDeleteFalse(req.getPostId())
                 .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
-        //삭제된 댓글의 대댓글도 작성할 수 있어야 함->deleteFalse를 확인하지 않음
+        //해당 상위 댓글이 없을 경우 예외 처리
         Comment parentComment = req.getParentCommentId() != null ?
-                commentRepository.findById(req.getParentCommentId())
+                commentRepository.findByIdAndIsDeletedFalse(req.getParentCommentId())
                         .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND)) : null;
 
         Comment comment = Comment.builder()
                 .post(targetPost)
-                .parentComment(parentComment)
                 .member(author)
                 .content(req.getContent())
                 .build();
 
+        if (parentComment != null) {
+            comment.updateParent(parentComment);
+
+            //부모 댓글 작성자에게 알림
+            eventPublisher.publishEvent(new CommentFcmEvent(comment, parentComment.getMember()));
+        }
+
 
         commentRepository.save(comment);
-        targetPost.increaseCommentCnt();
 
+
+        //게시글 작성자에게 알림
         eventPublisher.publishEvent(new CommentFcmEvent(comment, author));
 
     }
 
     public List<CommentDto> findComment(Long postId, CustomUserDetails principal) {
 
-        Member user =
+        Member member =
                 principal == null ?
                         null : memberRepository.findById(principal.getId())
                         .orElseThrow(
                                 () -> new NoAuthorizationException("댓글 조회 실패: 권한이 없습니다.")
                         );
 
-        if (user != null && user.getStatus() != MemberStatus.active) {
-            user = null;
+        if (member != null && member.getStatus() != MemberStatus.active) {
+            member = null;
         }
 
-        return commentRepository.findComment(postId, user);
+        return commentRepository.findComment(postId, member);
 
+
+    }
+
+    public List<CommentDto> findCommentNew(Long postId, CustomUserDetails principal) {
+        Member member =
+                principal == null ?
+                        null : memberRepository.findById(principal.getId())
+                        .orElseThrow(
+                                () -> new NoAuthorizationException("댓글 조회 실패: 권한이 없습니다.")
+                        );
+
+        List<CommentDto> comments = commentRepository.findComment(postId, member);
+
+
+        Map<Long, CommentDto> commentMap = new HashMap<>();
+        List<CommentDto> parentComments = new ArrayList<>();
+
+        for (CommentDto comment : comments) {
+            commentMap.put(comment.getCommentId(), comment);
+
+
+            //루트 댓글이면 루트 댓글 리스트에 추가
+            if (comment.getParentCommentId() == null) {
+                parentComments.add(comment);
+            } else {
+                //그게 아니면 comment의 부모 댓글 id map에 자식 id 추가
+                commentMap.get(comment.getParentCommentId()).getChildComments().add(comment);
+            }
+        }
+
+        return parentComments;
 
     }
 
@@ -90,7 +131,7 @@ public class CommentService {
         Member member = checkMemberValid(principal, "댓글 갱신 실패: 비로그인 사용자입니다.",
                 "댓글 갱신 실패: 권한이 없습니다.");
 
-        Comment comment = commentRepository.findByIdAndIsDeleteFalse(commentId)
+        Comment comment = commentRepository.findByIdAndIsDeletedFalse(commentId)
                 .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND));
 
 
@@ -110,7 +151,7 @@ public class CommentService {
         Member member = checkMemberValid(principal, "댓글 삭제 실패: 비로그인 사용자입니다.",
                 "댓글 삭제 실패: 권한이 없습니다.");
 
-        Comment comment = commentRepository.findByIdAndIsDeleteFalse(commentId)
+        Comment comment = commentRepository.findByIdAndIsDeletedFalse(commentId)
                 .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND));
 
         if (!comment.getMember().equals(member)) {
@@ -119,7 +160,6 @@ public class CommentService {
 
 
         comment.tempDelete();
-        comment.getPost().decreaseCommentCnt();
 
     }
 
