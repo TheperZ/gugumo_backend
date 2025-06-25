@@ -24,4 +24,5 @@ public class SimplePostDto {
     private int meetingMemberNum;
     private LocalDate meetingDeadline;
     private boolean isBookmarked;
+    private long commentCnt;
 }

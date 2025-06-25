@@ -26,10 +26,11 @@ public class SimplePostQueryDto {
     private int meetingMemberNum;
     private LocalDate meetingDeadline;
     private boolean isBookmarked;
+    private long commentCnt;
 
 
     @QueryProjection
-    public SimplePostQueryDto(Long postId, MeetingType meetingType, MeetingStatus status, GameType gameType, Location location, String title, LocalDateTime meetingDateTime, String meetingDays, int meetingMemberNum, LocalDate meetingDeadline, boolean isBookmarked) {
+    public SimplePostQueryDto(Long postId, MeetingType meetingType, MeetingStatus status, GameType gameType, Location location, String title, LocalDateTime meetingDateTime, String meetingDays, int meetingMemberNum, LocalDate meetingDeadline, boolean isBookmarked, long commentCnt) {
         this.postId = postId;
         this.meetingType = meetingType;
         this.status = status;
@@ -41,5 +42,6 @@ public class SimplePostQueryDto {
         this.meetingMemberNum = meetingMemberNum;
         this.meetingDeadline = meetingDeadline;
         this.isBookmarked = isBookmarked;
+        this.commentCnt = commentCnt;
     }
 }

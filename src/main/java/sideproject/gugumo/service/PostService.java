@@ -24,10 +24,7 @@ import sideproject.gugumo.domain.entity.post.Post;
 import sideproject.gugumo.exception.exception.NoAuthorizationException;
 import sideproject.gugumo.exception.exception.NotFoundException;
 import sideproject.gugumo.page.PageCustom;
-import sideproject.gugumo.repository.BookmarkRepository;
-import sideproject.gugumo.repository.MeetingRepository;
-import sideproject.gugumo.repository.MemberRepository;
-import sideproject.gugumo.repository.PostRepository;
+import sideproject.gugumo.repository.*;
 import sideproject.gugumo.request.CreatePostReq;
 import sideproject.gugumo.request.UpdatePostReq;
 
@@ -53,6 +50,7 @@ public class PostService {
     private final MeetingRepository meetingRepository;
     private final MemberRepository memberRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final CommentRepository commentRepository;
 
     /**
      * 단기모집 기준: meetingDate, meetingTime 반영(default)
@@ -134,8 +132,7 @@ public class PostService {
 
         //이걸 한번 더 가공해서(DetailPostDto처럼, 단기모임에서는 meetingDatetime을, 장기모임에서는 meetingTime, meetingDays)
         List<T> result = page.stream()
-                .map(p -> convertToTransDto(p))
-                .map(r -> (T) r)
+                .map(p -> (T) convertToTransDto(p))
                 .collect(Collectors.toList());
 
         log.info("principal={}", principal);
@@ -348,6 +345,7 @@ public class PostService {
                     .meetingDeadline(s.getMeetingDeadline())
                     .isBookmarked(s.isBookmarked())
                     .meetingDateTime(s.getMeetingDateTime())
+                    .commentCnt(s.getCommentCnt())
                     .build();
 
 
@@ -363,6 +361,7 @@ public class PostService {
                     .isBookmarked(s.isBookmarked())
                     .meetingTime(s.getMeetingDateTime().toLocalTime())
                     .meetingDays(s.getMeetingDays())
+                    .commentCnt(s.getCommentCnt())
                     .build();
 
 
@@ -371,45 +370,6 @@ public class PostService {
         return (T) result;
     }
 
-    private <T extends SimplePostDto> T convertToTransDto(Post post, Member member) {
-
-        Meeting meeting = post.getMeeting();
-
-        SimplePostDto result = new SimplePostDto();
-
-        if (post.getMeeting().getMeetingType() == MeetingType.SHORT) {
-            result = SimplePostShortDto.builder()
-                    .postId(post.getId())
-                    .meetingStatus(meeting.getStatus())
-                    .gameType(meeting.getGameType())
-                    .location(meeting.getLocation())
-                    .title(post.getTitle())
-                    .meetingMemberNum(meeting.getMeetingMemberNum())
-                    .meetingDeadline(meeting.getMeetingDeadline())
-                    .isBookmarked(bookmarkRepository.existsByMemberAndPost(member, post))
-                    .meetingDateTime(meeting.getMeetingDateTime())
-                    .build();
-
-
-        } else if (post.getMeeting().getMeetingType() == MeetingType.LONG) {
-            result = SimplePostLongDto.builder()
-                    .postId(post.getId())
-                    .meetingStatus(meeting.getStatus())
-                    .gameType(meeting.getGameType())
-                    .location(meeting.getLocation())
-                    .title(post.getTitle())
-                    .meetingMemberNum(meeting.getMeetingMemberNum())
-                    .meetingDeadline(meeting.getMeetingDeadline())
-                    .isBookmarked(bookmarkRepository.existsByMemberAndPost(member, post))
-                    .meetingTime(meeting.getMeetingDateTime().toLocalTime())
-                    .meetingDays(meeting.getMeetingDays())
-                    .build();
-
-
-        }
-        return (T) result;
-
-    }
 
 
 }
