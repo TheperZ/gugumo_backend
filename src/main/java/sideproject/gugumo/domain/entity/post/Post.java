@@ -49,6 +49,10 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
+    @NotNull
+    @Builder.Default
+    private long commentCnt = 0;
+
 
 
     public void addViewCount() {

@@ -72,10 +72,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         meeting.meetingMemberNum,
                         meeting.meetingDeadline,
                         bookmark.isNotNull().as("isBookmarked"),
-                        comment.count()
+                        post.commentCnt
                 ))
                 .from(post)
-                .leftJoin(comment).on(comment.post.eq(post))
+                /*.leftJoin(comment).on(comment.post.eq(post))*/
                 .leftJoin(post.meeting, meeting)
                 .leftJoin(bookmark).on(bookmark.post.eq(post), hasMember(member))
                 .where(
@@ -83,7 +83,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         gameTypeEq(cond.getGameType()), meetingStatusEq(cond.getMeetingStatus()),
                         post.isDelete.isFalse()
                 )
-                .groupBy(post.id, meeting.id, bookmark.id)
+                /*.groupBy(post.id, meeting.id, bookmark.id)*/
                 .orderBy(recruitFirst.asc(), orderSpecifier, post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
