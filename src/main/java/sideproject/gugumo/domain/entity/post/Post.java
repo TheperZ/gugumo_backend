@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import sideproject.gugumo.domain.entity.BaseEntity;
 import sideproject.gugumo.domain.entity.meeting.Meeting;
 import sideproject.gugumo.domain.entity.member.Member;
+import sideproject.gugumo.exception.exception.CustomServerError;
 import sideproject.gugumo.request.UpdatePostReq;
-
-import java.time.LocalDateTime;
+import sideproject.gugumo.response.StatusCode;
 
 @Slf4j
 @Entity
@@ -64,6 +64,17 @@ public class Post extends BaseEntity {
         this.title = updatePostReq.getTitle();
         this.content = updatePostReq.getContent();
 
+    }
+
+    public void increaseCommentCnt(){
+        this.commentCnt++;
+    }
+
+    public void decreaseCommentCnt(){
+        if (this.commentCnt == 0) {
+            throw new CustomServerError(StatusCode.INVALID_COMMENT_COUNT);
+        }
+        this.commentCnt--;
 
     }
 

@@ -69,27 +69,10 @@ public class CommentService {
 
         commentRepository.save(comment);
 
+        targetPost.increaseCommentCnt();
 
         //게시글 작성자에게 알림
         eventPublisher.publishEvent(new CommentFcmEvent(comment, author));
-
-    }
-
-    public List<CommentDto> findComment(Long postId, CustomUserDetails principal) {
-
-        Member member =
-                principal == null ?
-                        null : memberRepository.findById(principal.getId())
-                        .orElseThrow(
-                                () -> new NoAuthorizationException("댓글 조회 실패: 권한이 없습니다.")
-                        );
-
-        if (member != null && member.getStatus() != MemberStatus.active) {
-            member = null;
-        }
-
-        return commentRepository.findComment(postId, member);
-
 
     }
 
@@ -141,6 +124,7 @@ public class CommentService {
         }
 
         comment.update(req);
+        comment.getPost().decreaseCommentCnt();
 
 
     }
@@ -160,6 +144,7 @@ public class CommentService {
 
 
         comment.tempDelete();
+        comment.getPost().decreaseCommentCnt();
 
     }
 
