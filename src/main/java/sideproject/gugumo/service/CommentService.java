@@ -76,7 +76,7 @@ public class CommentService {
 
     }
 
-    public List<CommentDto> findCommentNew(Long postId, CustomUserDetails principal) {
+    public List<CommentDto> findComment(Long postId, CustomUserDetails principal) {
         Member member =
                 principal == null ?
                         null : memberRepository.findById(principal.getId())

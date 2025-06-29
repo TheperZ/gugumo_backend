@@ -37,7 +37,7 @@ public class CommentController {
     public ResponseEntity<ApiResponse<List<CommentDto>>> findComment(@AuthenticationPrincipal CustomUserDetails principal,
                                                                      @PathVariable("post_id") Long postId) {
 
-        return ResponseEntity.status(FIND_COMMENT.getHttpCode()).body(ApiResponse.createSuccess(FIND_COMMENT, commentService.findCommentNew(postId, principal)));
+        return ResponseEntity.status(FIND_COMMENT.getHttpCode()).body(ApiResponse.createSuccess(FIND_COMMENT, commentService.findComment(postId, principal)));
     }
 
     @PatchMapping("/api/v1/comments/{comment_id}")

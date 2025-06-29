@@ -46,6 +46,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .where(
                         comment.post.id.eq(postId), comment.isDeleted.isFalse()
                 )
+                .orderBy(comment.createdAt.asc())
                 .fetch();
 
         return result;
