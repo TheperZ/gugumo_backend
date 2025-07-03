@@ -23,11 +23,11 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/api/v1/comments")
-    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/api/v1/posts/{post_id}/comments")
     public ResponseEntity<ApiResponse<String>> saveComment(@AuthenticationPrincipal CustomUserDetails principal,
+                                                           @PathVariable("post_id") Long postId,
                                                            @Valid @RequestBody CreateCommentReq req) {
-        commentService.save(req, principal);
+        commentService.save(postId, req, principal);
 
         return ResponseEntity.status(CREATE_COMMENT.getHttpCode()).body(ApiResponse.createSuccess(CREATE_COMMENT));
 

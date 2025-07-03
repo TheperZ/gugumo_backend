@@ -12,7 +12,6 @@ import sideproject.gugumo.domain.entity.member.QMember;
 import java.util.List;
 
 import static sideproject.gugumo.domain.entity.QComment.comment;
-import static sideproject.gugumo.domain.entity.member.QMember.member;
 import static sideproject.gugumo.domain.entity.post.QPost.post;
 
 
