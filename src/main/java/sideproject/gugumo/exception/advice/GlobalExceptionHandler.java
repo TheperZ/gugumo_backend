@@ -79,6 +79,7 @@ public class GlobalExceptionHandler {
     public ApiResponse<String> exceptionHandler(Exception e) {
         String exceptionMessage = e.getMessage();
         log.error("[Exception] ex : " + exceptionMessage);
+        e.printStackTrace();
         return ApiResponse.createFail(exceptionMessage);
     }
 }

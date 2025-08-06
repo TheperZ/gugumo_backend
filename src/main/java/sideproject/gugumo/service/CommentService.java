@@ -3,6 +3,10 @@ package sideproject.gugumo.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.CannotAcquireLockException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,13 +44,13 @@ public class CommentService {
     private final PostRepository postRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void save(Long postId, CreateCommentReq req, CustomUserDetails principal) {
 
         Member author = checkMemberValid(principal, "댓글 등록 실패: 비로그인 사용자입니다.",
                 "댓글 등록 실패: 권한이 없습니다.");
 
-        Post targetPost = postRepository.findByIdAndIsDeleteFalse(postId)
+        Post targetPost = postRepository.findByIdAndIsDeleteFalseWithLock(postId)
                 .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
 
         //해당 상위 댓글이 없을 경우 예외 처리
@@ -70,7 +74,7 @@ public class CommentService {
 
         commentRepository.save(comment);
 
-        postRepository.updateCommentCntById(postId);
+        targetPost.increaseCommentCnt();
 
         //게시글 작성자에게 알림
         eventPublisher.publishEvent(new CommentFcmEvent(comment, author));
