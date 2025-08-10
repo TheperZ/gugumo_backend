@@ -134,7 +134,7 @@ public class CommentService {
 
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deleteComment(Long commentId, CustomUserDetails principal) {
         //토큰에서
         Member member = checkMemberValid(principal, "댓글 삭제 실패: 비로그인 사용자입니다.",
@@ -149,7 +149,11 @@ public class CommentService {
 
 
         comment.tempDelete();
-        comment.getPost().decreaseCommentCnt();
+
+        Post targetPost = postRepository.findByIdAndIsDeleteFalseWithLock(comment.getPost().getId())
+                .orElseThrow(() -> new NotFoundException(POST_NOT_FOUND));
+
+        targetPost.decreaseCommentCnt();
 
     }
 
