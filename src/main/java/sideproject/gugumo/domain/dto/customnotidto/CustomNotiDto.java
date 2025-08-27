@@ -21,7 +21,7 @@ public class CustomNotiDto {
     private String message;
     private NotificationType notificationType;
 
-    private LocalDateTime createDate;
+    private LocalDateTime createdAt;
     private boolean isRead;
 
 

@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static sideproject.gugumo.domain.entity.QBookmark.bookmark;
+import static sideproject.gugumo.domain.entity.QComment.comment;
 import static sideproject.gugumo.domain.entity.meeting.QMeeting.meeting;
 import static sideproject.gugumo.domain.entity.post.QPost.post;
 
@@ -70,7 +71,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         meeting.meetingDays,
                         meeting.meetingMemberNum,
                         meeting.meetingDeadline,
-                        bookmark.isNotNull().as("isBookmarked")
+                        bookmark.isNotNull().as("isBookmarked"),
+                        post.commentCnt
                 ))
                 .from(post)
                 .leftJoin(post.meeting, meeting)
@@ -110,14 +112,17 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         meeting.meetingDays,
                         meeting.meetingMemberNum,
                         meeting.meetingDeadline,
-                        bookmark.isNotNull().as("isBookmarked")
+                        bookmark.isNotNull().as("isBookmarked"),
+                        comment.count()
                 ))
                 .from(post)
                 .leftJoin(post.meeting, meeting)
+                .leftJoin(comment).on(comment.post.eq(post))
                 .leftJoin(bookmark).on(bookmark.post.eq(post), hasMember(member))
                 .where(
                         queryEq(q), post.member.eq(member), post.isDelete.isFalse()
                 )
+                .groupBy(post.id, meeting.id, bookmark.id)
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -147,15 +152,18 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         meeting.meetingDays,
                         meeting.meetingMemberNum,
                         meeting.meetingDeadline,
-                        bookmark.isNotNull().as("isBookmarked")
+                        bookmark.isNotNull().as("isBookmarked"),
+                        comment.count()
                 ))
                 .from(post)
                 .leftJoin(post.meeting, meeting)
+                .leftJoin(comment).on(comment.post.eq(post))
                 .leftJoin(bookmark).on(bookmark.post.eq(post), hasMember(member))
                 .where(
                         post.isDelete.isFalse(), favoriteSportsEq(favoriteSports),
                         meeting.status.eq(MeetingStatus.RECRUIT)
                 )
+                .groupBy(post.id, meeting.id, bookmark.id)
                 .orderBy(Expressions.numberTemplate(Double.class, "function('random')").asc())
                 .limit(8)
                 .fetch();
@@ -181,9 +189,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private OrderSpecifier createOrderSpecifier(SortType sortType) {
         return switch (sortType) {
-            case OLD -> new OrderSpecifier<>(Order.ASC, post.createDate);
+            case OLD -> new OrderSpecifier<>(Order.ASC, post.createdAt);
             case LIKE -> new OrderSpecifier<>(Order.DESC, post.viewCount);
-            default -> new OrderSpecifier<>(Order.DESC, post.createDate);
+            default -> new OrderSpecifier<>(Order.DESC, post.createdAt);
         };
     }
 

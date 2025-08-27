@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import sideproject.gugumo.domain.entity.BaseEntity;
 import sideproject.gugumo.domain.entity.meeting.Meeting;
 import sideproject.gugumo.domain.entity.member.Member;
+import sideproject.gugumo.exception.exception.CustomServerError;
 import sideproject.gugumo.request.UpdatePostReq;
-
-import java.time.LocalDateTime;
+import sideproject.gugumo.response.StatusCode;
 
 @Slf4j
 @Entity
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -29,10 +30,6 @@ public class Post {
     @NotNull
     @Column(length = 10000)
     private String content;
-
-    @NotNull
-    @Builder.Default
-    private LocalDateTime createDate = LocalDateTime.now();
 
     @NotNull
     @Builder.Default
@@ -54,7 +51,8 @@ public class Post {
 
     @NotNull
     @Builder.Default
-    private long commentCnt = 0L;
+    private long commentCnt = 0;
+
 
 
     public void addViewCount() {
@@ -66,6 +64,17 @@ public class Post {
         this.title = updatePostReq.getTitle();
         this.content = updatePostReq.getContent();
 
+    }
+
+    public void increaseCommentCnt(){
+        this.commentCnt++;
+    }
+
+    public void decreaseCommentCnt(){
+        if (this.commentCnt == 0) {
+            throw new CustomServerError(StatusCode.INVALID_COMMENT_COUNT);
+        }
+        this.commentCnt--;
 
     }
 
@@ -77,11 +86,4 @@ public class Post {
         this.isDelete = true;
     }
 
-    public void increaseCommentCnt() {
-        this.commentCnt++;
-    }
-
-    public void decreaseCommentCnt() {
-        this.commentCnt--;
-    }
 }

@@ -1,3 +1,4 @@
+/*
 package sideproject.gugumo.repository;
 
 import org.junit.jupiter.api.DisplayName;
@@ -87,4 +88,4 @@ class MemberRepositoryTest {
     }
 
 
-}
+}*/

@@ -36,6 +36,14 @@ public class GlobalExceptionHandler {
         return ApiResponse.createFail(e.getStatusCode());
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = {CustomServerError.class})
+    public ApiResponse<String> handleCustomServerError(CustomServerError e) {
+        String exceptionMessage = e.getMessage();
+        log.error("[CustomServerError] ex : " + e.getMessage());
+        return ApiResponse.createFail(e.getStatusCode());
+    }
+
     /**
      * spring validation 예외 처리
      * @param e
@@ -71,6 +79,7 @@ public class GlobalExceptionHandler {
     public ApiResponse<String> exceptionHandler(Exception e) {
         String exceptionMessage = e.getMessage();
         log.error("[Exception] ex : " + exceptionMessage);
+        e.printStackTrace();
         return ApiResponse.createFail(exceptionMessage);
     }
 }

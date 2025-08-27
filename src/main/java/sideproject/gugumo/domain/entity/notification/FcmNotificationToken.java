@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sideproject.gugumo.domain.entity.BaseEntity;
 import sideproject.gugumo.domain.entity.member.Member;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FcmNotificationToken {
+public class FcmNotificationToken extends BaseEntity {
 
     @Id
     @GeneratedValue

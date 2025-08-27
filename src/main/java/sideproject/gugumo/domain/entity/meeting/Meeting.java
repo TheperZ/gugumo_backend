@@ -3,6 +3,7 @@ package sideproject.gugumo.domain.entity.meeting;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import sideproject.gugumo.domain.entity.BaseEntity;
 import sideproject.gugumo.domain.entity.member.Member;
 import sideproject.gugumo.domain.entity.post.Post;
 import sideproject.gugumo.request.UpdatePostReq;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Getter
-public class Meeting {
+public class Meeting extends BaseEntity {
 
     @Id
     @GeneratedValue

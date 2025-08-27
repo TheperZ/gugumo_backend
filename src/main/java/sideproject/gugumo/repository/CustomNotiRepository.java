@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface CustomNotiRepository extends JpaRepository<CustomNoti, Long> {
-    public List<CustomNoti> findByMemberOrderByCreateDateDesc(Member member);
+    public List<CustomNoti> findByMemberOrderByCreatedAtDesc(Member member);
 
     @Modifying(clearAutomatically = true)
     @Query("delete from CustomNoti c where c.member=:member and c.isRead=true")

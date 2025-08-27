@@ -37,6 +37,7 @@ public enum StatusCode {
     DELETE_POST(HttpStatus.OK, "게시글 삭제 완료"),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글이 존재하지 않음"),
     INVALID_MEETING(HttpStatus.BAD_REQUEST, "모임 타입이 적절하지 않음"),
+    INVALID_COMMENT_COUNT(HttpStatus.INTERNAL_SERVER_ERROR, ""),
 
     //댓글 관련
     CREATE_COMMENT(HttpStatus.CREATED, "댓글 작성 완료"),

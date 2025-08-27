@@ -3,6 +3,7 @@ package sideproject.gugumo.domain.entity.notification;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import sideproject.gugumo.domain.entity.BaseEntity;
 import sideproject.gugumo.domain.entity.member.Member;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CustomNoti {
+public class CustomNoti extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -29,10 +30,6 @@ public class CustomNoti {
     @Builder.Default
     @NotNull
     private boolean isRead = false;
-
-    @Builder.Default
-    @NotNull
-    private LocalDateTime createDate = LocalDateTime.now();
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
